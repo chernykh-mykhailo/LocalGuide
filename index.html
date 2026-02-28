@@ -94,8 +94,17 @@
         class="bg-white border-r border-gray-200 w-full md:w-64 flex-shrink-0 flex flex-row md:flex-col fixed bottom-0 md:sticky md:top-0 z-50 md:min-h-screen shadow-[0_-2px_10px_rgba(0,0,0,0.05)] md:shadow-none overflow-x-auto no-scrollbar">
         <div class="hidden md:block p-6 border-b border-gray-100">
             <h1 class="text-2xl font-black text-brand-dark">🇨🇿 Прага 2026</h1>
-            <p class="text-xs text-brand-muted mt-1">👨‍👧‍👧 Сімейний тур • 5 днів</p>
-            <p class="text-xs text-brand-muted mt-1 uppercase tracking-wider font-bold">Family Edition</p>
+            <p class="text-xs text-brand-muted mt-1 text-[10px] uppercase font-bold tracking-widest">Сімейний тур • 5
+                днів</p>
+
+            <!-- Search Bar -->
+            <div class="mt-4 relative group">
+                <input type="text" id="site-search" placeholder="Пошук..."
+                    class="w-full bg-gray-50 border border-gray-200 rounded-lg py-2 pl-9 pr-3 text-xs outline-none focus:border-brand-red focus:ring-1 focus:ring-brand-red transition-all"
+                    onkeyup="handleSearch(this.value)">
+                <span
+                    class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-red transition-colors">🔍</span>
+            </div>
         </div>
 
         <div class="flex flex-row md:flex-col p-2 md:p-4 gap-1 md:gap-2 w-full">
@@ -1220,7 +1229,7 @@
             "Jazz Dock": 2.5, "Letenské": 2.0, "Дрезден": 8.0, "Мухи": 1.5, "Телевізійна": 1.5,
             "Pivní": 2.5, "Music City": 1.5, "Muziker": 1.0, "Play!": 1.5, "GameOn": 2.0, "Bohemia": 2.5,
             "Трамвай №42": 2.0, "Swiss": 10.0, "Dresden": 8.0, "Vary": 7.0, "Kytary.cz": 1.5,
-            "Національний Музей": 3.0, "Петршинська": 2.0, "Музичні магазини": 1.5, "Board Game": 2.5, "Топ фото-локації": 3.0, "Скелелазіння": 2.5, "Console Gaming": 2.0
+            "Національний Музей": 3.0, "Петршинська": 2.0, "Музичні магазини": 1.5, "Board Game": 2.5, "Топ фото-локації": 3.0, "Скелелазіння": 2.5, "Console Gaming": 2.0, "Джазові клуби": 2.5
         };
 
         let favorites = JSON.parse(localStorage.getItem('prague_favs')) || [];
@@ -1423,75 +1432,84 @@
             const dayNames = ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П\'ятниця', 'Субота'];
             let totalTime = 0;
             let unassignedCount = 0;
+            list.classList.remove('hidden'); // Show the container if not empty
+            // document.getElementById('plan-actions').classList.remove('hidden'); // No 'plan-actions' in original
 
-            // Prepare groups (0 = unassigned, 1 to tripDuration = days)
             const dayGroups = { 0: [] };
-            for (let d = 1; d <= tripDuration; d++) dayGroups[d] = [];
+            for (let i = 1; i <= tripDuration; i++) dayGroups[i] = [];
 
             favorites.forEach(id => {
                 const day = dayAssignments[id] || 0;
-                // If assignment is valid for current duration
-                if (day > 0 && day <= tripDuration) {
-                    dayGroups[day].push(id);
-                } else {
-                    dayGroups[0].push(id);
-                    unassignedCount++;
-                }
-                totalTime += (itemDurations[id] || 0);
+                if (dayGroups[day]) dayGroups[day].push(id);
+                else dayGroups[0].push(id);
             });
 
-            document.getElementById('stat-count').innerText = favorites.length;
-            document.getElementById('stat-time').innerText = totalTime.toFixed(1);
-            document.getElementById('unassigned-warning').classList.toggle('hidden', unassignedCount === 0);
-
-            // Render each day section
-            for (let d = 0; d <= tripDuration; d++) {
-                if (d === 0 && unassignedCount === 0) continue;
-
-                let dayTime = 0;
-                dayGroups[d].forEach(id => dayTime += (itemDurations[id] || 0));
-
-                let dayTitle = d === 0 ? "🛑 Нерозподілені" : `День ${d}`;
-                let dateBadge = "";
-
-                if (d > 0 && tripStartDate) {
-                    const date = new Date(tripStartDate);
-                    date.setDate(date.getDate() + (d - 1));
-                    const dName = dayNames[date.getDay()];
-                    const dStr = date.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit' });
-                    dateBadge = `<span class="text-xs font-normal opacity-60 ml-2">(${dName}, ${dStr})</span>`;
+            // Update individual cards UI
+            document.querySelectorAll('.heart-btn').forEach(btn => {
+                const card = btn.closest('[data-item-id]');
+                if (card) {
+                    const id = card.getAttribute('data-item-id');
+                    if (favorites.includes(id)) {
+                        btn.innerHTML = '❤️';
+                        btn.classList.add('bg-red-50', 'text-red-500'); // Added bg-red-50
+                        btn.classList.remove('bg-white', 'text-gray-300'); // Removed bg-white
+                    } else {
+                        btn.innerHTML = '🤍';
+                        btn.classList.remove('bg-red-50', 'text-red-500'); // Removed bg-red-50
+                        btn.classList.add('bg-white', 'text-gray-300'); // Added bg-white
+                    }
                 }
+            });
 
-                const daySection = document.createElement('div');
-                daySection.className = `p-4 rounded-2xl border ${d === 0 ? 'bg-amber-50 border-amber-200' : 'bg-white border-gray-100 shadow-sm'}`;
+            // Render day blocks
+            for (let d = 1; d <= tripDuration; d++) {
+                const dayBlock = document.createElement('div');
+                dayBlock.className = "p-4 rounded-2xl border bg-white border-gray-100 shadow-sm mb-6 last:mb-0"; // Added classes from original
 
-                daySection.innerHTML = `
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-bold text-lg">${dayTitle}${dateBadge}</h3>
-                        <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">⏱️ ${dayTime.toFixed(1)} год</span>
+                const dateHeader = getFormattedDateForDay(d);
+
+                dayBlock.innerHTML = `
+                    <div class="flex justify-between items-end mb-3">
+                        <h3 class="text-lg font-bold">День ${d} <span class="text-xs text-gray-400 font-normal ml-2">${dateHeader}</span></h3>
+                        <div id="day-total-${d}" class="text-xs font-bold text-gray-400">⏱️ 0 год</div>
                     </div>
-                    <div class="space-y-3" id="day-list-${d}"></div>
+                    <div id="day-list-${d}" class="space-y-2 min-h-[50px] bg-gray-50/50 rounded-2xl p-3 border-2 border-dashed border-gray-100">
+                    </div>
                 `;
+                list.appendChild(dayBlock);
 
-                const list = daySection.querySelector(`#day-list-${d}`);
+                const currentDayList = dayBlock.querySelector(`#day-list-${d}`);
+                let dayTime = 0;
+
                 dayGroups[d].forEach(id => {
                     const time = itemDurations[id] || 0;
+                    dayTime += time;
                     let originalCard = document.querySelector(`[data-item-id="${id}"]`);
                     let cardTitle = id;
+                    let targetTab = 'tab-sights'; // default
+
                     if (originalCard) {
                         const h = originalCard.querySelector('h4') || originalCard.querySelector('h3');
                         if (h) cardTitle = h.innerText;
+                        const parentTab = originalCard.closest('.tab-content');
+                        if (parentTab) targetTab = parentTab.id;
                     }
 
                     const item = document.createElement('div');
                     item.className = "bg-white p-3 rounded-xl border border-gray-50 flex flex-wrap justify-between items-center gap-2";
                     item.innerHTML = `
                         <div class="flex-1 min-w-[150px]">
-                            <div class="font-bold text-sm leading-tight">${cardTitle} <span class="text-[10px] text-gray-400 ml-1">⏱️ ${time}</span></div>
+                            <button onclick="openTab('${targetTab}'); document.querySelector('[data-item-id=\\'${id}\\']').scrollIntoView({behavior: 'smooth', block: 'center'});" 
+                                class="text-left group">
+                                <div class="font-bold text-sm leading-tight group-hover:text-brand-red transition-colors">${cardTitle} 
+                                    <span class="text-[10px] text-gray-400 ml-1">⏱️ ${time}</span>
+                                    <span class="text-[10px] text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity ml-1">→ детальніше</span>
+                                </div>
+                            </button>
                         </div>
                         <div class="flex items-center gap-2">
                             <select onchange="assignDay('${id}', parseInt(this.value))" class="text-[10px] bg-gray-50 border-none rounded px-1 py-0.5 outline-none">
-                                <option value="0" ${d === 0 ? 'selected' : ''}>-- день --</option>
+                                <option value="0">-- день --</option>
                                 ${Array.from({ length: tripDuration }, (_, i) => i + 1).map(dayNum => `
                                     <option value="${dayNum}" ${d === dayNum ? 'selected' : ''}>День ${dayNum}</option>
                                 `).join('')}
@@ -1499,10 +1517,59 @@
                             <button onclick="toggleFavorite('${id}', document.querySelector('[data-item-id=\\'${id}\\'] .heart-btn'))" class="text-gray-300 hover:text-red-500 text-xs">🗑️</button>
                         </div>
                     `;
-                    list.appendChild(item);
+                    currentDayList.appendChild(item);
                 });
 
-                daysWrapper.appendChild(daySection);
+                document.getElementById(`day-total-${d}`).innerText = `⏱️ ${dayTime.toFixed(1)} год`;
+            }
+
+            // Unassigned items block
+            if (dayGroups[0].length > 0) {
+                const unassignedBlock = document.createElement('div');
+                unassignedBlock.className = "p-4 rounded-2xl border bg-amber-50 border-amber-200 mt-8 pt-6 border-t border-gray-100"; // Added classes from original
+                unassignedBlock.innerHTML = `
+                    <h3 class="font-bold text-lg">🛑 Нерозподілені</h3>
+                    <div id="unassigned-list" class="space-y-2"></div>
+                `;
+                list.appendChild(unassignedBlock);
+                const unassignedList = unassignedBlock.querySelector('#unassigned-list');
+
+                dayGroups[0].forEach(id => {
+                    const time = itemDurations[id] || 0;
+                    let originalCard = document.querySelector(`[data-item-id="${id}"]`);
+                    let cardTitle = id;
+                    let targetTab = 'tab-sights';
+
+                    if (originalCard) {
+                        const h = originalCard.querySelector('h4') || originalCard.querySelector('h3');
+                        if (h) cardTitle = h.innerText;
+                        const parentTab = originalCard.closest('.tab-content');
+                        if (parentTab) targetTab = parentTab.id;
+                    }
+
+                    const item = document.createElement('div');
+                    item.className = "bg-white p-3 rounded-xl border border-gray-50 flex flex-wrap justify-between items-center gap-2 opacity-60 hover:opacity-100 transition-opacity";
+                    item.innerHTML = `
+                        <div class="flex-1 min-w-[150px]">
+                            <button onclick="openTab('${targetTab}'); document.querySelector('[data-item-id=\\'${id}\\']').scrollIntoView({behavior: 'smooth', block: 'center'});" 
+                                class="text-left group">
+                                <div class="font-bold text-sm leading-tight group-hover:text-brand-red transition-colors">${cardTitle} 
+                                    <span class="text-[10px] text-gray-400 ml-1">⏱️ ${time}</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select onchange="assignDay('${id}', parseInt(this.value))" class="text-[10px] bg-gray-50 border-none rounded px-1 py-0.5 outline-none">
+                                <option value="0" selected>-- день --</option>
+                                ${Array.from({ length: tripDuration }, (_, i) => i + 1).map(dayNum => `
+                                    <option value="${dayNum}">День ${dayNum}</option>
+                                `).join('')}
+                            </select>
+                            <button onclick="toggleFavorite('${id}', document.querySelector('[data-item-id=\\'${id}\\'] .heart-btn'))" class="text-gray-300 hover:text-red-500 text-xs">🗑️</button>
+                        </div>
+                    `;
+                    unassignedList.appendChild(item);
+                });
             }
         }
 
@@ -1551,6 +1618,101 @@
             // Scroll to top of main on mobile when switching tabs
             if (window.innerWidth < 768) {
                 window.scrollTo(0, 0);
+            }
+        }
+
+        function handleSearch(query) {
+            query = query.toLowerCase().trim();
+            const tabContents = document.querySelectorAll('.tab-content');
+            const navButtons = document.querySelectorAll('.nav-btn');
+
+            // Reset indicators on nav buttons
+            navButtons.forEach(btn => {
+                const badge = btn.querySelector('.search-badge');
+                if (badge) badge.remove();
+            });
+
+            if (!query) {
+                // Reset EVERYTHING
+                document.querySelectorAll('.tab-content div, .tab-content section, .tab-content h2, .tab-content h3, .tab-content h4, .tab-content p, .tab-content li, [data-item-id]').forEach(el => {
+                    el.classList.remove('hidden', 'ring-2', 'ring-brand-red', 'animate-pulse', 'cursor-pointer');
+                    if (el.dataset.itemId) {
+                        // Reset heart click handler logic if needed, but it's bound via dataset.itemId check
+                    } else {
+                        el.onclick = null;
+                    }
+                });
+                return;
+            }
+
+            let foundInTabs = new Map(); // tabId -> count
+
+            // First pass: find all matches across all tabs
+            const allElements = document.querySelectorAll('.tab-content [data-item-id], .tab-content h2, .tab-content h3, .tab-content h4, .tab-content p, .tab-content li, .tab-content .bg-white');
+
+            // Hide all potential leaf nodes first
+            allElements.forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('ring-2', 'ring-brand-red', 'cursor-pointer');
+                el.onclick = null;
+            });
+
+            allElements.forEach(el => {
+                const text = el.innerText.toLowerCase();
+                const isMatch = text.includes(query);
+
+                if (isMatch) {
+                    el.classList.remove('hidden');
+                    const pTab = el.closest('.tab-content');
+                    if (pTab) foundInTabs.set(pTab.id, (foundInTabs.get(pTab.id) || 0) + 1);
+
+                    // If it's a significant block, highlight it
+                    if (el.hasAttribute('data-item-id') || el.classList.contains('bg-white')) {
+                        el.classList.add('ring-2', 'ring-brand-red', 'cursor-pointer');
+                        el.onclick = () => {
+                            document.getElementById('site-search').value = '';
+                            handleSearch('');
+                            setTimeout(() => {
+                                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                                // Enhanced Highlight (Background + Border)
+                                el.classList.add('ring-4', 'ring-blue-400', 'bg-blue-100', 'transition-all', 'duration-500', 'z-10', 'relative', 'scale-[1.02]');
+
+                                setTimeout(() => {
+                                    el.classList.remove('ring-4', 'ring-blue-400', 'bg-blue-100', 'scale-[1.02]');
+                                    // Let it settle back to original state
+                                    setTimeout(() => el.classList.remove('z-10', 'relative'), 500);
+                                }, 4000);
+                            }, 50);
+                        };
+                    }
+
+                    // Show parents
+                    let parent = el.parentElement;
+                    while (parent && !parent.classList.contains('tab-content')) {
+                        parent.classList.remove('hidden');
+                        parent = parent.parentElement;
+                    }
+                }
+            });
+
+            // Update nav buttons with match counts
+            foundInTabs.forEach((count, tabId) => {
+                const btnId = tabId.replace('tab-', 'btn-');
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    const badge = document.createElement('span');
+                    badge.className = "search-badge ml-auto bg-brand-red text-white text-[10px] px-1.5 rounded-full font-bold animate-pulse";
+                    badge.innerText = count > 20 ? '9+' : count;
+                    btn.appendChild(badge);
+                }
+            });
+
+            // Auto-switch to the best tab
+            const currentTabId = document.querySelector('.tab-content.active')?.id;
+            if (foundInTabs.size > 0 && !foundInTabs.has(currentTabId)) {
+                let bestTab = [...foundInTabs.entries()].reduce((a, b) => a[1] > b[1] ? a : b)[0];
+                openTab(bestTab);
             }
         }
     </script>
