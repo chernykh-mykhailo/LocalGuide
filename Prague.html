@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Prague Guide</title>
+    <!-- Chosen Palette: Prague Vibe (Cream background, Dark Slate Text, Crimson Red & Beer Gold accents) -->
+    <!-- Application Structure Plan: A multi-tab SPA dashboard. 
+         Addresses the user's feedback about "everything on one page" by creating distinct, navigable views using JavaScript, simulating a multi-page website within a single file.
+         Sections: 
+         1. Transport & Base (Quick logistics).
+         2. Food & Beer (Where to eat, local hacks).
+         3. Entertainment & Parks (Bowling, cinema, chill spots, PLUS new Sports section: rollerblading & climbing).
+         4. Anti-Guide (Scams, tourist traps, price checks).
+         5. Day Trips (Kutná Hora, Karlovy Vary, etc.).
+         Navigation is via a left sidebar on desktop and a bottom tab bar on mobile. -->
+    <!-- Visualization & Content Choices: 
+         - Goal: Inform/Organize -> Method: Tabbed Interface -> Interaction: Click tabs to switch content.
+         - Goal: Compare -> Method: Price Check Tables in Anti-Guide.
+         - Goal: Discover -> Method: Grid cards for activities and day trips.
+         - No SVGs, using Unicode emojis for iconography to keep it lightweight. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#FAF9F6', // Off-white
+                            dark: '#1F2937',
+                            red: '#BE123C', // Rose/Crimson
+                            gold: '#D97706',
+                            card: '#FFFFFF',
+                            muted: '#6B7280'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FAF9F6;
+            color: #1F2937;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile bottom nav padding */
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 5rem;
+            }
+        }
+
+        /* Hide scrollbar for nav */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased min-h-screen flex flex-col md:flex-row">
+
+    <!-- Navigation (Sidebar on Desktop, Bottom Bar on Mobile) -->
+    <nav
+        class="bg-white border-r border-gray-200 w-full md:w-64 flex-shrink-0 flex flex-row md:flex-col fixed bottom-0 md:sticky md:top-0 z-50 md:min-h-screen shadow-[0_-2px_10px_rgba(0,0,0,0.05)] md:shadow-none overflow-x-auto no-scrollbar">
+        <div class="hidden md:block p-6 border-b border-gray-100">
+            <h1 class="text-2xl font-black text-brand-dark">🇨🇿 Прага 2026</h1>
+            <p class="text-xs text-brand-muted mt-1">👨‍👧‍👧 Сімейний тур • 5 днів</p>
+            <p class="text-xs text-brand-muted mt-1 uppercase tracking-wider font-bold">Family Edition</p>
+        </div>
+
+        <div class="flex flex-row md:flex-col p-2 md:p-4 gap-1 md:gap-2 w-full">
+            <button onclick="openTab('tab-base')" id="btn-base"
+                class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors bg-brand-red text-white">
+                <span class="text-xl md:text-lg">🚋</span> <span class="text-center md:text-left">База</span>
+            </button>
+            <button onclick="openTab('tab-sights')" id="btn-sights"
+                class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-gray-100 hover:text-brand-dark">
+                <span class="text-xl md:text-lg">🗺️</span> <span class="text-center md:text-left">Що дивитись</span>
+            </button>
+            <button onclick="openTab('tab-food')" id="btn-food"
+                class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-gray-100 hover:text-brand-dark">
+                <span class="text-xl md:text-lg">🍻</span> <span class="text-center md:text-left">Їжа</span>
+            </button>
+            <button onclick="openTab('tab-fun')" id="btn-fun"
+                class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-gray-100 hover:text-brand-dark">
+                <span class="text-xl md:text-lg">🎳</span> <span class="text-center md:text-left">Розваги</span>
+            </button>
+            <button onclick="openTab('tab-anti')" id="btn-anti"
+                class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-gray-100 hover:text-brand-dark">
+                <span class="text-xl md:text-lg">🛑</span> <span class="text-center md:text-left">Анти-Гайд</span>
+            </button>
+            <button onclick="openTab('tab-trips')" id="btn-trips"
+                class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-gray-100 hover:text-brand-dark">
+                <span class="text-xl md:text-lg">🚂</span> <span class="text-center md:text-left">Виїзди</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-4 md:p-10 lg:p-12 w-full max-w-5xl mx-auto">
+
+        <!-- TAB 1: BASE & TRANSPORT -->
+        <section id="tab-base" class="tab-content active">
+            <header class="mb-8 border-b border-gray-200 pb-4">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-dark">Логістика & База</h2>
+                <p class="text-brand-muted mt-2">Як дістатися, житло та проїзні.</p>
+            </header>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><span>✈️</span> З Аеропорту</h3>
+                    <p class="mb-3 text-sm text-gray-700">Тільки <strong>Тролейбус №59</strong>! Він входить у ваш
+                        проїзний за 550 крон. Їде до зеленої гілки метро (Nádraží Veleslavín). Не сідайте в автобус АЕ
+                        (Airport Express) — здеруть по 200 крон.</p>
+                    <div class="bg-green-50 p-3 rounded-lg text-sm text-green-800 border border-green-200">
+                        <strong>Ваш маршрут до Праги 2:</strong><br>Тролейбус №59 ➔ Метро А (зелена) ➔ пересадка на
+                        Метро С (червона) на ст. Muzeum ➔ вихід на I.P. Pavlova.
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><span>🎫</span> Проїзний Lítačka</h3>
+                    <p class="mb-3 text-sm text-gray-700">У вас абонемент на місяць. Він покриває <strong>абсолютно
+                            весь</strong> міський транспорт у межах зон P, 0, B.</p>
+                    <ul class="list-disc pl-5 text-sm text-gray-700 space-y-1">
+                        <li>Всі трамваї, автобуси, метро.</li>
+                        <li>Фунікулер на пагорб Петршин (звичайна ціна 60 крон).</li>
+                        <li>Річкові пороми (човни) через Влтаву.</li>
+                        <li>Знижка 50% на деякі музеї (Жидівський, Лобковіцький).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: SIGHTS -->
+        <section id="tab-sights" class="tab-content">
+            <header class="mb-8 border-b border-gray-200 pb-4">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-dark">🗺️ Що дивитись у Празі</h2>
+                <p class="text-brand-muted mt-2">Від туристичної класики до прихованих куточків — з розрахунку на вас
+                    трьох.</p>
+            </header>
+
+            <!-- Must-see: Old Town -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold mb-4 flex items-center gap-2"><span>🏰</span> Старе Місто і Малá Страна
+                </h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-brand-red">
+                        <h4 class="font-bold text-base">⏰ Астрономічний Годинник (Orloj)</h4>
+                        <p class="text-sm text-gray-600 mt-1">На ратуші Старого Міста. Щогодини з 9:00 до 23:00
+                            відкриваються вікна і рухаються фігурки апостолів. Шоу триває 30 секунд — встаньте на площі
+                            за 5 хв до повної години. <strong>Вхід безкоштовний</strong>, але нагору на вежу — 250 крон.
+                        </p>
+                        <p class="text-xs text-gray-400 mt-2">📍 Staroměstské náměstí</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-blue-500">
+                        <h4 class="font-bold text-base">🌉 Карлів Міст (Karlův most)</h4>
+                        <p class="text-sm text-gray-600 mt-1">Найстаріший міст Праги з 30 статуями святих. <strong>Рано
+                                вранці (до 7:00)</strong> — практично порожній і магічний у тумані. Вдень — набитий
+                            туристами і торгашами. З моста чудовий вид на замок і річку.</p>
+                        <p class="text-xs text-gray-400 mt-2">📍 Між Старим Містом і Малою Страною</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-amber-500">
+                        <h4 class="font-bold text-base">🏛️ Пражський Град (Pražský hrad)</h4>
+                        <p class="text-sm text-gray-600 mt-1">Найбільший замковий комплекс у світі. Обов'язково:
+                            <strong>Собор св. Віта</strong> (дивіться вітражі зсередини), Старий Королівський палац і
+                            Злата Вуличка (Zlatá ulička) — крихітні середньовічні будиночки. Квиток Circuit B: 250 крон.
+                        </p>
+                        <p class="text-xs text-gray-400 mt-2">📍 Hradčany, Praha 1</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-green-500">
+                        <h4 class="font-bold text-base">🎻 Малeнькі провулки Малої Страни</h4>
+                        <p class="text-sm text-gray-600 mt-1">Район під Замком — найкрасивіший для прогулянки. Вулиця
+                            <strong>Nerudova</strong> веде прямо від мосту до воріт замку. Зайдіть у дворики, зазирніть
+                            в арки. Там само знаходиться вілла Джона Леннона (з графіті стіна).
+                        </p>
+                        <p class="text-xs text-gray-400 mt-2">📍 Малостранська (metro A)</p>
+                    </div>
+
+                    <div
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-purple-500">
+                        <h4 class="font-bold text-base">💀 Єврейський Квартал (Josefov)</h4>
+                        <p class="text-sm text-gray-600 mt-1">Старе єврейське гетто з 6 синагогами і старим кладовищем
+                            (єдине місце в Європі де могили стоять вертикально, бо бракувало місця). Duже моторошно і
+                            вражаюче. Квиток на все: ~500 крон. <strong>З вашим Lítačka — знижка 50%!</strong></p>
+                        <p class="text-xs text-gray-400 mt-2">📍 Staroměstské náměstí (поруч)</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-rose-500">
+                        <h4 class="font-bold text-base">🌇 Вацлавська площа (Václavské náměstí)</h4>
+                        <p class="text-sm text-gray-600 mt-1">Головна площа-бульвар Праги. Не кругла, а довга (700м). Це
+                            тусовочне серце — ресторани, магазини, кінотеатри. На верхньому кінці — Національний Музей
+                            (щойно відреставрований, прикольна будівля). <strong>Ваш квартал Прага 2 — буквально
+                                поруч!</strong></p>
+                        <p class="text-xs text-gray-400 mt-2">📍 Muzeum / I.P. Pavlova (metro C)</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Viewpoints -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold mb-4 flex items-center gap-2"><span>🔭</span> Видові Точки (де зробити ту
+                    саму фотку)</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+
+                    <div class="bg-gradient-to-br from-sky-50 to-blue-50 p-5 rounded-xl border border-blue-200">
+                        <h4 class="font-bold text-blue-900">🗼 Петршинська Вежа + Фунікулер</h4>
+                        <p class="text-sm text-blue-800 mt-1">Копія Ейфелевої вежі на пагорбі Петршин. Фунікулер
+                            підіймає вас на гору — і це входить у <strong>ваш проїзний</strong> (безкоштовно!). Звідти
+                            вид на всі черепичні дахи. Сама вежа — ще 150 крон. Нагорі є дзеркальний лабіринт (смішно
+                            для фото).</p>
+                        <p class="text-xs text-blue-600 mt-2">📍 Funicular station: Újezd (tram)</p>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-amber-50 to-yellow-50 p-5 rounded-xl border border-amber-200">
+                        <h4 class="font-bold text-amber-900">⛰️ Вишеград (Vyšehrad)</h4>
+                        <p class="text-sm text-amber-800 mt-1">Стародавня фортеця прямо у вашій Празі 2! Огорожа,
+                            старезна ротонда, панорамне кладовище де поховані Дворжак і Муха. Фантастичний вид на замок
+                            і Влтаву. <strong>Вхід на саму фортецю — безкоштовний.</strong> Ідеально для вечірнього
+                            виходу.</p>
+                        <p class="text-xs text-amber-700 mt-2">📍 Metro C: Vyšehrad</p>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-5 rounded-xl border border-green-200">
+                        <h4 class="font-bold text-green-900">🌳 Летенські Сади + Beer Garden</h4>
+                        <p class="text-sm text-green-800 mt-1">Парк на підвищенні над Влтавою. Видова тераса дає
+                            <strong>найшикарніший вид на Старе Місто та мости</strong> — і це безкоштовно. Поруч прямо в
+                            парку є відкритий бір-гарден: пиво під відкритим небом з цим видом. Для тата — мрія.
+                        </p>
+                        <p class="text-xs text-green-700 mt-2">📍 Tram: Čechův most</p>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-purple-50 to-violet-50 p-5 rounded-xl border border-purple-200">
+                        <h4 class="font-bold text-purple-900">🌃 Жижків та Телевізійна вежа</h4>
+                        <p class="text-sm text-purple-800 mt-1">Телевізійна вежа Жижкова — найпотворніша і найдивніша
+                            будівля Праги. На ній висять <strong>велетенські немовлята</strong> (арт від Давіда
+                            Черного). Ліфт на оглядовий майданчик: 300 крон. Знизу і безкоштовно теж прикольно. Сам
+                            район Жижков — найбohemніший, з купою барів.</p>
+                        <p class="text-xs text-purple-700 mt-2">📍 Tram: Lipanská</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Museums worth going -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold mb-4 flex items-center gap-2"><span>🎨</span> Музеї і Галереї (варті
+                    грошей)</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h4 class="font-bold">🎠 Музей Альфонса Мухи</h4>
+                        <p class="text-sm text-gray-600 mt-1">Альфонс Муха — чеський Art Nouveau художник, якого знає
+                            весь світ (він малював відомі плакати з красунями). Камерний особистий музей. Квиток: 240
+                            крон. Якщо любите красу — варте.</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h4 class="font-bold">✈️ Музей авіації (Kbely)</h4>
+                        <p class="text-sm text-gray-600 mt-1">Один з найкращих авіамузеїв Центральної Європи — десятки
+                            справжніх літаків і вертольотів часів WWI та WWII. Для тата і взагалі тих хто любить техніку
+                            — <strong>просто шедевр</strong>. Вхід: 100 крон. Трохи далеко від центру, але того варте.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h4 class="font-bold">🔬 DOX — Центр Сучасного Мистецтва</h4>
+                        <p class="text-sm text-gray-600 mt-1">Якщо цікавить сучасне мист-во, а не живопис 17 ст. — DOX
+                            це найактуальніші виставки + на даху стоїть <strong>підвішений дерев'яний дирижабль</strong>
+                            у натуральну величину (теж арт). Квиток: 220 крон.</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h4 class="font-bold">🏛️ Національний Музей</h4>
+                        <p class="text-sm text-gray-600 mt-1">Щойно відкрили після 10-річної реставрації. Вражаючий
+                            інтер'єр, природознавча та історична колекція. Для тата і загального розвитку. Квиток: 300
+                            крон. <strong>Вівторок — безкоштовно з 15:00.</strong></p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h4 class="font-bold">🎭 Чорний театр / Laterna Magika</h4>
+                        <p class="text-sm text-gray-600 mt-1">Унікальне шоу без слів: акробати і міми у FL-підсвітці, де
+                            людина взаємодіє з відеопроєкціями. <strong>Мовного бар'єру немає взагалі</strong> — 100%
+                            зрозуміло всім. Вечірній сеанс ~600 крон. Варте уваги.</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <h4 class="font-bold">🍺 Pivní muzeum (Музей пива)</h4>
+                        <p class="text-sm text-gray-600 mt-1">Інтерактивний музей з дегустацією. Проходите по стендах і
+                            в кінці отримуєте жетони на пиво з танків різних сортів. Для тата — мастхев. ~400 крон
+                            включно з дегустацією.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- YOUR personal interests -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold mb-4 flex items-center gap-2"><span>🎸</span> Для тебе: Музика, Ігри,
+                    Фото, Скелі</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                    <div
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500">
+                        <h4 class="font-bold">🎹 Muzeum Hudby (Музей музики)</h4>
+                        <p class="text-sm text-gray-600 mt-1">Гілка Національного музею присвячена <strong>музичним
+                                інструментам</strong>. Сотні справжніх старовинних інструментів: клавесини, скрипки
+                            Страдиварі, стародавні гітари, духові. Інтерактивні стенди — можна послухати як звучать.
+                            Квиток: 150 крон. Знаходиться у барочному палаці на Малій Страні.</p>
+                        <p class="text-xs text-gray-400 mt-2">📍 Karmelitská 2, Praha 1 (Malá Strana)</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-pink-500">
+                        <h4 class="font-bold">🎵 Музичні магазини</h4>
+                        <p class="text-sm text-gray-600 mt-1"><strong>Kytary.cz</strong> — найбільший музичний магазин
+                            Чехії (шоурум у Празі з тисячами гітар, клавіатур, педалів). <strong>Music City</strong> —
+                            вінтажні та рідкісні інструменти. <strong>Muziker</strong> (ТЦ Nový Smíchov) — якщо треба
+                            аксесуари. Просто зайти потримати в руках — безкоштовно 😄</p>
+                        <p class="text-xs text-gray-400 mt-2">📍 Kytary.cz: Pobřežní 18, Praha 8</p>
+                    </div>
+
+                    <div
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-violet-500">
+                        <h4 class="font-bold">🎲 Board Game кафе / бари</h4>
+                        <p class="text-sm text-gray-600 mt-1"><strong>Paluba</strong> — найкращий настолки-бар у Празі
+                            (район Vinohrady, тобто ваша Прага 2!). 600+ ігор, пиво, закуски. Платиш за час (~100
+                            крон/год). <strong>Herní Bar (GameOn)</strong> — мікс настолок і відеоігор. <strong>Bohemia
+                                Boards & Brews</strong> — крафтове пиво + євроігри (Catan, Wingspan тощо).</p>
+                        <p class="text-xs text-gray-400 mt-2">📍 Paluba: Vinohradská, Praha 2</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-cyan-500">
+                        <h4 class="font-bold">📸 Топ фото-локації Праги</h4>
+                        <p class="text-sm text-gray-600 mt-1"><strong>1.</strong> Карлів Міст о 6:00 у тумані.
+                            <strong>2.</strong> Танцюючий Будинок (Tančící dům) — архітектура для фотки.
+                            <strong>3.</strong> Стіна Леннона + кольорові провулки. <strong>4.</strong> Letná Beer
+                            Garden — панорама мостів. <strong>5.</strong> Náplavka (набережна) на заході.
+                            <strong>6.</strong> Стрілецький острів (Střelecký ostrov) — лебеді на воді з видом на замок.
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-orange-500">
+                        <h4 class="font-bold">🧗 Скелелазіння — повний список</h4>
+                        <p class="text-sm text-gray-600 mt-1"><strong>SmíchOFF</strong> — найбільший з мотузкою (стіни
+                            15м, прокат усього). <strong>Lokal Blok</strong> — боулдерінг + ресторан нагорі.
+                            <strong>BigWall Praha</strong> — новий мега-зал з автострахуванням (ідеально якщо лізеш
+                            один). <strong>Hudy Boulder</strong> — мережа з кількома точками. Ціна: 200-350 крон/сесія.
+                            Прокат взуття: ~80 крон.
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-emerald-500">
+                        <h4 class="font-bold">🖥️ PC/Console Gaming</h4>
+                        <p class="text-sm text-gray-600 mt-1"><strong>Joystick Bar</strong> (ретро аркадні автомати).
+                            <strong>Level Up Gaming Lounge</strong> — сучасні PC та консолі (PS5, Xbox), VR-зони. Платиш
+                            за годину. <strong>Play! Prague</strong> — VR від 300 крон (тематичні квести у VR). Для
+                            серйозних геймерів — стіми в кожному закладі.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Day by day suggestion -->
+            <div class="bg-brand-dark text-white p-6 rounded-2xl">
+                <h3 class="text-xl font-bold mb-4">📅 Орієнтовний план на 5 днів</h3>
+                <div class="grid md:grid-cols-5 gap-3 text-sm">
+                    <div class="bg-white/10 p-3 rounded-lg">
+                        <p class="font-bold text-brand-gold">День 1</p>
+                        <p class="mt-1 text-gray-300">Прага 2 і Вишеград. Будинки, кав'ярні, привітатись з містом.</p>
+                    </div>
+                    <div class="bg-white/10 p-3 rounded-lg">
+                        <p class="font-bold text-brand-gold">День 2</p>
+                        <p class="mt-1 text-gray-300">Карлів Міст (рано), Малу Страну, Замок і Петршин.</p>
+                    </div>
+                    <div class="bg-white/10 p-3 rounded-lg">
+                        <p class="font-bold text-brand-gold">День 3</p>
+                        <p class="mt-1 text-gray-300">Старе Місто, Годинник, Josefov, Летна на захід сонця.</p>
+                    </div>
+                    <div class="bg-white/10 p-3 rounded-lg">
+                        <p class="font-bold text-brand-gold">День 4</p>
+                        <p class="mt-1 text-gray-300">Виїзд (Кутна Гора). Або активний день + кіно/боулінг ввечері.</p>
+                    </div>
+                    <div class="bg-white/10 p-3 rounded-lg">
+                        <p class="font-bold text-brand-gold">День 5</p>
+                        <p class="mt-1 text-gray-300">Жижков, Телевежа, шопінг, ресторан і збори.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 2b: FOOD -->
+        <section id="tab-food" class="tab-content">
+            <header class="mb-8 border-b border-gray-200 pb-4">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-dark">Їжа & Пиво</h2>
+                <p class="text-brand-muted mt-2">Де шукати м'ясо і як не переплачувати.</p>
+            </header>
+
+            <div class="grid md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-amber-50 p-5 rounded-xl border border-amber-200">
+                    <h4 class="font-bold text-amber-900 mb-2">🍖 Vepřové koleno</h4>
+                    <p class="text-sm text-amber-800">Величезна свиняча рулька (1.2-1.5 кг). Беріть <strong>одну на всю
+                            сім'ю</strong>. Ціна має бути 400-600 крон за всю.</p>
+                </div>
+                <div class="bg-blue-50 p-5 rounded-xl border border-blue-200">
+                    <h4 class="font-bold text-blue-900 mb-2">🍲 Svíčková</h4>
+                    <p class="text-sm text-blue-800">Яловичина в солодко-вершковому соусі з кнедликами. Класика. Ціна:
+                        200-280 крон.</p>
+                </div>
+                <div class="bg-green-50 p-5 rounded-xl border border-green-200">
+                    <h4 class="font-bold text-green-900 mb-2">🍽️ Denní menu</h4>
+                    <p class="text-sm text-green-800">З 11:30 до 14:00 ресторани роблять комплексні обіди (суп + м'ясо)
+                        за ~150-220 крон. Шукайте дошки перед входом.</p>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold mb-4">Де поїсти (перевірені місця):</h3>
+            <div class="space-y-4">
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex gap-4 items-start">
+                    <div class="text-3xl mt-1">🏰</div>
+                    <div>
+                        <h4 class="font-bold text-lg">Havelská Koruna (Центр)</h4>
+                        <p class="text-sm text-gray-600">Традиційна чеська їдальня біля Вацлавської площі. Набираєте їжу
+                            на тацю. Дуже дешево, супер ситно, працює як конвеєр. Ідеально для швидкого обіду.</p>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex gap-4 items-start">
+                    <div class="text-3xl mt-1">🍺</div>
+                    <div>
+                        <h4 class="font-bold text-lg">Lokal (Кілька точок по місту)</h4>
+                        <p class="text-sm text-gray-600">Найпопулярніша мережа пивниць для місцевих. Завжди свіже пиво з
+                            танків (Pilsner Urquell). Меню чеське, ціни адекватні. Ввечері важко знайти місце без броні.
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex gap-4 items-start">
+                    <div class="text-3xl mt-1">🍣</div>
+                    <div>
+                        <h4 class="font-bold text-lg">Running Sushi (ТЦ Palladium, Nový Smíchov)</h4>
+                        <p class="text-sm text-gray-600">Якщо втомились від м'яса. Платите фіксовану суму (~400 крон
+                            вдень) і їсте з конвеєра скільки влізе протягом 2 годин.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ALL YOU CAN EAT -->
+            <h3 class="text-xl font-bold mb-4 mt-8 flex items-center gap-2"><span>🍽️</span> Буфети «Їж скільки влізе»
+                (All-You-Can-Eat)</h3>
+            <div class="bg-orange-50 p-4 rounded-xl border border-orange-200 mb-4">
+                <p class="text-sm text-orange-900"><strong>Що таке буфет у Празі:</strong> Платиш фіксовану суму — їш
+                    скільки хочеш протягом 1.5–2 годин. Зазвичай є обідня ціна (дешевша) та вечірня. Напої окремо.
+                    Чайові 10% прийнято, але не обов'язково.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-rose-500">
+                    <div class="flex justify-between items-start">
+                        <h4 class="font-bold text-lg">🍣 Sumo Sushi & Grill</h4>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-bold">~400 крон
+                            обід</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Один з найпопулярніших AYCE суші у Празі. Замовляєш через
+                        планшет (не конвеєр — все свіже). Суші, сашимі, темпура, роли, гарячі страви та десерти.
+                        <strong>Обід: ~400 крон, вечеря: ~550 крон</strong>. Якість справді хороша. Є кілька точок по
+                        місту.</p>
+                    <p class="text-xs text-gray-400 mt-2">📍 Вацлавська площа / Anděl / Florenc</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-pink-500">
+                    <div class="flex justify-between items-start">
+                        <h4 class="font-bold text-lg">🍣 Running Sushi (Happy)</h4>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-bold">~400 крон
+                            обід</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Класичний конвеєрний суші-буфет. Сідаєш за стійку, їжа їде
+                        повз тебе на тарілочках — берешь що хочеш. <strong>Обід: ~400 крон/2 год, вечеря: ~500
+                            крон</strong>. Точки у <strong>ТЦ Palladium</strong> (центр) та <strong>Nový
+                            Smíchov</strong>. Ідеально коли всі хочуть різне.</p>
+                    <p class="text-xs text-gray-400 mt-2">📍 ТЦ Palladium (Náměstí Republiky) / Nový Smíchov</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-red-500">
+                    <div class="flex justify-between items-start">
+                        <h4 class="font-bold text-lg">🥩 Brazilian Steakhouse (Ambiente)</h4>
+                        <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-bold">~700
+                            крон</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Бразильська родізіо-система: офіціанти ходять з шампурами
+                        різного м'яса (яловичина, свинина, курка, ковбаски) і <strong>ріжуть прямо тобі в
+                            тарілку</strong> поки не скажеш «стоп». Салат-бар без обмежень. <strong>Для тата — рай
+                            земний</strong>. Ціна ~700 крон за все м'ясо + салати. Не дешево, але того варте раз на
+                        поїздку.</p>
+                    <p class="text-xs text-gray-400 mt-2">📍 Ambiente Brasileiro: Mánesova, Praha 2 (ваш район!)</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-orange-500">
+                    <div class="flex justify-between items-start">
+                        <h4 class="font-bold text-lg">🍜 Asia Restaurant Bílý Koníček</h4>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-bold">~300 крон
+                            обід</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Азійський буфет з гірок різних страв: китайська, в'єтнамська,
+                        тайська кухня. Набираєш на тарілку скільки хочеш. <strong>Обід ~300 крон, вечеря ~400
+                            крон</strong>. Простий інтер'єр, але їжа ситна і вибір величезний. Найдешевший варіант AYCE
+                        у Празі.</p>
+                    <p class="text-xs text-gray-400 mt-2">📍 Staroměstské náměstí (поруч)</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-amber-500">
+                    <div class="flex justify-between items-start">
+                        <h4 class="font-bold text-lg">🍖 Kampa Group — м'ясний буфет</h4>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-bold">~450
+                            крон</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Чеська та міжнародна кухня у форматі буфету. М'ясо на грилі,
+                        традиційні чеські страви (гуляш, печене коліно порціями), салати, супи, десерти. <strong>~450
+                            крон за обід</strong>. Стоїть у самому центрі. Хороший варіант коли кожен хоче щось своє.
+                    </p>
+                    <p class="text-xs text-gray-400 mt-2">📍 Центр (біля Музея)</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-green-500">
+                    <div class="flex justify-between items-start">
+                        <h4 class="font-bold text-lg">🥗 Grosseto Marina (Brunch)</h4>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-bold">~500
+                            крон</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Розкішний <strong>недільний бранч</strong> у форматі буфету на
+                        набережній Влтави. Яйця, бекон, панкейки, фрукти, десерти, сири, м'ясні страви. ~500 крон з
+                        напоями. Красива тераса з видом на воду. Потрібно бронювати!</p>
+                    <p class="text-xs text-gray-400 mt-2">📍 Alšovo nábřeží (набережна, поруч зі Старим Містом)</p>
+                </div>
+            </div>
+
+            <div class="mt-4 p-4 bg-red-50 rounded-lg border border-red-200">
+                <p class="text-sm text-red-900"><strong>⚠️ Уникайте:</strong> Буфети на Вацлавській площі з написом
+                    «Czech Buffet» за 200 крон — це пастки. Там стоять розігріті контейнери з їжею незрозумілої
+                    свіжості. Якщо буфет коштує підозріло дешево у самому центрі — це 🚩.</p>
+            </div>
+
+            <div class="mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
+                <p class="text-sm text-purple-900"><strong>Лайфхак на вечір:</strong> Встановіть додаток
+                    <strong>Nesnězeno</strong>. Ресторани ввечері розпродають нереалізовану їжу зі знижками 50-70%. У
+                    Празі 2 таких закладів дуже багато.
+                </p>
+            </div>
+        </section>
+
+        <!-- TAB 3: FUN & ENTERTAINMENT -->
+        <section id="tab-fun" class="tab-content">
+            <header class="mb-8 border-b border-gray-200 pb-4">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-dark">Розваги, Спорт & Парки</h2>
+                <p class="text-brand-muted mt-2">Що робити, коли замки та собори вже в печінках сидять.</p>
+            </header>
+
+            <div class="space-y-6">
+
+                <!-- NEW: Sports & Active -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-3 flex items-center gap-2"><span>🧗‍♂️</span> Спорт: Ролики та
+                        Скелелазіння</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div
+                            class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-blue-500">
+                            <h4 class="font-bold">Ролики (Парк Ладронка / Ladronka)</h4>
+                            <p class="text-sm text-gray-600 mt-1">Парк <strong>Ладронка</strong> — це абсолютна мекка
+                                для ролерів у Празі. Там ідеально рівна асфальтована траса на 4.2 км, заборонено рух
+                                авто, є освітлення ввечері. Прямо в парку є прокат роликів та захисту. Ще один класний
+                                варіант — широка велодоріжка (A2) вздовж річки Влтава на південь від району Бранік.</p>
+                        </div>
+                        <div
+                            class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-orange-500">
+                            <h4 class="font-bold">Скеледроми (SmíchOFF та Lokal Blok)</h4>
+                            <p class="text-sm text-gray-600 mt-1">Для висотного лазіння з мотузкою йдіть у
+                                <strong>SmíchOFF</strong> — один із найбільших скелодромів Центральної Європи (стіни до
+                                15м, є прокат всього спорядження). Якщо віддаєте перевагу <strong>боулдерингу</strong>
+                                (лазіння над матами без страховки), дуже раджу <strong>Lokal Blok</strong> — там класний
+                                зал, а одразу нагорі працює їхній же шикарний ресторан-паб з крафтовим пивом.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Fun (Games) -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-3 flex items-center gap-2"><span>🎯</span> Ігри та Кіно</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="font-bold">Боулінг (Bowling Celnice / Radava)</h4>
+                            <p class="text-sm text-gray-600 mt-1">Bowling Celnice знаходиться прямо в центрі (біля ТЦ
+                                Palladium). Зазвичай працює допізна, там же подають пиво та закуски. Бронювати доріжку
+                                краще за день.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="font-bold">Кінотеатри (Cinema City / IMAX)</h4>
+                            <p class="text-sm text-gray-600 mt-1">У Чехії майже всі західні фільми <strong>НЕ
+                                    дублюють</strong>, а показують мовою оригіналу (англійською) з чеськими субтитрами.
+                                Найбільший кінотеатр з IMAX — у ТЦ Atrium Flora (на метро А).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parks -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-3 flex items-center gap-2"><span>🌳</span> Круті парки (не тільки
+                        дерева)</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="font-bold">Парк Летна (Letenské sady)</h4>
+                            <p class="text-sm text-gray-600 mt-1">Величезний парк на пагорбі. Тут знаходиться знаменитий
+                                <strong>Beer Garden</strong> (пивний сад). Купуєш пиво, сідаєш за дерев'яний стіл прямо
+                                над обривом і дивишся на всі мости Праги.
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="font-bold">Ріегрови сади (Riegrovy sady)</h4>
+                            <p class="text-sm text-gray-600 mt-1">Прямо біля вашої Праги 2! Тут збирається молодь на
+                                заходи сонця. Теж є великий бір-гарден з екранами. Дуже жива атмосфера.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weird/Alternative -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-3 flex items-center gap-2"><span>👽</span> Альтернатива та
+                        зухвалості</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="font-bold">🚢 Катамарани по Влтаві</h4>
+                            <p class="text-sm text-gray-600 mt-1">На острові Slovanský ostrov (біля Національного
+                                театру) — прокат катамаранів-лебедів (від 300 крон/год). Самостійно пливете під мостами.
+                                Дуже прикольно для фото з-під Карлового моста.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="font-bold">🎵 Джазові клуби</h4>
+                            <p class="text-sm text-gray-600 mt-1"><strong>Jazz Dock</strong> — концертний заклад прямо у
+                                Влтави (з вікнами на рівні води). Живий джаз щовечора. Для тата — ідеально.
+                                <strong>Reduta Jazz Club</strong> — найстаріший в Чехії, тут грав Клінтон. Квитки
+                                200-350 крон.
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="font-bold">🎮 Retro Arcade бари</h4>
+                            <p class="text-sm text-gray-600 mt-1"><strong>Joystick Bar</strong> та <strong>Good Game
+                                    Bar</strong> — бари з десятками аркадних автоматів 80-90-х, настільними іграми та
+                                консолями. Платиш за вхід (~200 крон) і граєш скільки хочеш. Пиво + старі ігри = золото.
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="font-bold">🔓 Квест-кімнати (Escape Rooms)</h4>
+                            <p class="text-sm text-gray-600 mt-1">У Празі десятки escape room різних тематик — від
+                                зомbia apocalypse до шпигунський. Ідеально для трьох! Близько 600-900 крон на команду.
+                                Великий вибір: <strong>Escape Room Prague</strong>, <strong>Mindmaze</strong>.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="font-bold">🎳 Бар Ping Pong / Billiard</h4>
+                            <p class="text-sm text-gray-600 mt-1"><strong>Hemingway Bar</strong> у Новому Місті (дорого,
+                                але це досвід), або простіше — <strong>Pool & Billiard Club Billiardtime</strong>
+                                (більярд, настільний теніс, дартс). Відмінний варіант для компанії.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="font-bold">🌊 Аквапарк Aquapalace Praha</h4>
+                            <p class="text-sm text-gray-600 mt-1">Один з найбільших аквапарків Центральної Європи.
+                                Гірки, хвилі, сауни, атракціони. Для сімї — просто бомба, особливо якщо буде прохолодна
+                                погода. <strong>~900 крон/дорослий</strong>. Метро C + автобус (40 хв від центру).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- For Dad specifically -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-3 flex items-center gap-2"><span>👨</span> Окремо для тата:
+                        танчики, кораблики, літачки, м'яско</h3>
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-green-50 p-4 rounded-xl border border-green-200 border-l-4 border-l-green-600">
+                            <h4 class="font-bold text-green-900">🪖 Військово-технічний музей (Lešany)</h4>
+                            <p class="text-sm text-green-800 mt-1">Справжній рай для батька! Десятки <strong>реальних
+                                    танків</strong> (Т-34, Т-72, Sherman, Hetzer), БТРів, артилерії та броньовиків під
+                                відкритим небом. Музей знаходиться у Лешанах (~40 км від Праги), їхати поїздом до ст.
+                                Lešany. Відкритий з квітня до жовтня. <strong>Квиток: 150 крон</strong>. Половина дня
+                                мінімум.</p>
+                            <p class="text-xs text-green-700 mt-2">📍 Lešany u Týnce nad Sázavou (потяг зі Smíchovského
+                                nádraží)</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 border-l-4 border-l-blue-600">
+                            <h4 class="font-bold text-blue-900">⚙️ Національний Технічний Музей (NTM)</h4>
+                            <p class="text-sm text-blue-800 mt-1">Найбільший технічний музей Чехії. Величезний зал
+                                <strong>транспорту</strong>: справжні паровози, літаки підвішені під стелею, мотоцикли,
+                                автомобілі. Окремий зал астрономії та фото-техніки. Для тата — цілий день задоволення.
+                                <strong>Квиток: 290 крон</strong>. Щойно відреставрований.
+                            </p>
+                            <p class="text-xs text-blue-700 mt-2">📍 Kostelní 42, Praha 7 (Tram: Letenské náměstí)</p>
+                        </div>
+                        <div class="bg-sky-50 p-4 rounded-xl border border-sky-200 border-l-4 border-l-sky-600">
+                            <h4 class="font-bold text-sky-900">✈️ Музей авіації Kbely (розширено)</h4>
+                            <p class="text-sm text-sky-800 mt-1">275+ справжніх літаків та вертольотів! Від бі-планів
+                                WWI до реактивних MiG-21. Є <strong>бомбардувальники, навчальні машини,
+                                    транспортники</strong>. Деякі відкриті — можна сісти в кабіну. На відкритому
+                                повітрі. <strong>Вхід: 100 крон</strong> (смішні гроші за такий масштаб). Працює
+                                травень-жовтень.</p>
+                            <p class="text-xs text-sky-700 mt-2">📍 Mladoboleslavská, Praha 9 (Bus: Kbely)</p>
+                        </div>
+                        <div
+                            class="bg-indigo-50 p-4 rounded-xl border border-indigo-200 border-l-4 border-l-indigo-600">
+                            <h4 class="font-bold text-indigo-900">⚓ Vojenské muzeum u Žižkova (Armійський музей)</h4>
+                            <p class="text-sm text-indigo-800 mt-1">Прямо у центрі на Жижкові! Чеська військова історія
+                                від першої республіки до сьогодні. Моделі кораблів, зброя, уніформи, карти битв.
+                                Нещодавно <strong>повністю оновлений</strong> з мультимедійними стендами. <strong>Вхід
+                                    БЕЗКОШТОВНИЙ!</strong></p>
+                            <p class="text-xs text-indigo-700 mt-2">📍 U Památníku 2, Praha 3 (Tram: Památník Žižkova)
+                            </p>
+                        </div>
+                    </div>
+
+                    <h4 class="text-lg font-bold mb-3">🥩 М'ясні ресторани для тата</h4>
+                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900">🥩 Kantýna</h4>
+                            <p class="text-sm text-amber-800 mt-1">М'ясний рай. М'ясо <strong>сухого визрівання</strong>
+                                (dry-aged beef) прямо за склом, обираєш шматок — тобі його готують. Стейки, бургери,
+                                тартар. Ціна від 350 крон. Це найкращий м'ясний заклад у Празі для тих хто розуміє толк.
+                            </p>
+                        </div>
+                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900">🍖 U Kroka / Krčma</h4>
+                            <p class="text-sm text-amber-800 mt-1"><strong>U Kroka</strong> — непоказне місце біля
+                                Вишеграду з величезними порціями м'яса і чеською кухнею. <strong>Krčma (Středověká
+                                    krčma)</strong> — середньовічна корчма: їсте руками, пиво з глиняних кухлів, м'ясо з
+                                вертела. Дуже атмосферно!</p>
+                        </div>
+                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900">🍺 Пивоварня U Fleků (1499!)</h4>
+                            <p class="text-sm text-amber-800 mt-1">Найстаріша пивоварня Європи, що працює безперервно!
+                                Власне темне пиво (13°). Велике деревяне подвір'я. Їжа сита і м'ясна. Туристичне, але
+                                класика жанру. ~100 крон за 0.4л пива.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900">🚂 Ретро-трамвай №42</h4>
+                            <p class="text-sm text-amber-800 mt-1">Ресторанний трамвай — їдете по місту і обідаєте.
+                                Відправляється від Výstaviště. Бронювати заздалегідь. Близько 400 крон з їжею.</p>
+                        </div>
+                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900">🎼 Класична музика у церквах</h4>
+                            <p class="text-sm text-amber-800 mt-1">Щовечора у 10+ церквах Праги грають Моцарта,
+                                Дворжака, Вівальді. Квитки 400-600 крон. <strong>St. Nicholas Church</strong> у Малій
+                                Страні — найкраща.</p>
+                        </div>
+                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                            <h4 class="font-bold text-amber-900">🏭 Staropramen Brewery Tour</h4>
+                            <p class="text-sm text-amber-800 mt-1">Екскурсія по діючій пивоварні Staropramen у Смихові.
+                                Бачиш весь процес виробництва + дегустація 4 сортів. ~300 крон. Бронювати онлайн.</p>
+                            <p class="text-xs text-amber-700 mt-2">📍 Nádražní 84, Smíchov (Praha 5)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: ANTI-GUIDE (SCAMS) -->
+        <section id="tab-anti" class="tab-content">
+            <header class="mb-8 border-b border-gray-200 pb-4">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-red-700">Анти-Гайд 🛑</h2>
+                <p class="text-brand-muted mt-2">Де вас спробують "розвести", на що не витрачати час і гроші.</p>
+            </header>
+
+            <div class="bg-red-50 p-6 rounded-2xl border border-red-200 mb-8">
+                <h3 class="text-xl font-bold text-red-900 mb-4">Червоні прапорці в Празі:</h3>
+                <ul class="space-y-4">
+                    <li class="flex gap-3">
+                        <span class="text-xl">💱</span>
+                        <div>
+                            <strong class="text-red-900 block">Обмін валют на вулиці та в центрі</strong>
+                            <span class="text-sm text-red-800">Найбільший скам. Ніколи не міняйте гроші в "Euronet"
+                                банкоматах (синьо-жовті) — там комісія до 20%. Якщо треба готівка: знімайте в банкоматах
+                                <strong>КВ (Komerční banka), ČSOB, Česká spořitelna</strong> без конвертації (обирайте
+                                "Without conversion"). Або просто всюди платіть карткою.</span>
+                        </div>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-xl">🌿</span>
+                        <div>
+                            <strong class="text-red-900 block">Магазини з "Марихуаною" та "Абсентом"</strong>
+                            <span class="text-sm text-red-800">Весь центр у зелених вивісках. Це все фейк. Там продають
+                                CBD (без ефекту) втридорога. А "абсент" кислотно-зеленого кольору — це просто спирт з
+                                барвником. Справжній абсент прозорий або жовтуватий і продається в нормальних
+                                алкомаркетах.</span>
+                        </div>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-xl">🚕</span>
+                        <div>
+                            <strong class="text-red-900 block">Таксі з вулиці (біля вокзалів)</strong>
+                            <span class="text-sm text-red-800">Не сідайте в таксі, яке просто стоїть і чекає туристів.
+                                Ціну накрутять в 3-4 рази. Завжди використовуйте додатки <strong>Bolt</strong> або
+                                <strong>Uber</strong>.</span>
+                        </div>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-xl">🎭</span>
+                        <div>
+                            <strong class="text-red-900 block">Фейкові музеї</strong>
+                            <span class="text-sm text-red-800">Музей тортур, Музей шоколаду, Музей воскових фігур, Музей
+                                сексу, Музей ілюзій — це все приватні туристичні пастки з завищеними цінами на квитки
+                                (300-400 крон) і нульовою історичною цінністю.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Price Check Table -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="bg-gray-100 p-4 border-b border-gray-200">
+                    <h3 class="font-bold text-lg">💰 Прайс-чек: Адекватні ціни</h3>
+                </div>
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-gray-50 text-gray-500 uppercase">
+                        <tr>
+                            <th class="px-4 py-3">Що купуємо</th>
+                            <th class="px-4 py-3 text-green-700">Норм ціна</th>
+                            <th class="px-4 py-3 text-red-700">Туристична ціна (тікайте)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="px-4 py-3 font-medium">Пиво (0.5л)</td>
+                            <td class="px-4 py-3 text-green-700">45 - 65 крон</td>
+                            <td class="px-4 py-3 text-red-700">90 - 150 крон (в центрі)</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-medium">Трдельник*</td>
+                            <td class="px-4 py-3 text-green-700">70 - 90 крон</td>
+                            <td class="px-4 py-3 text-red-700">150+ крон (з фейковим морозивом)</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-medium">Обід (суп+гаряче)</td>
+                            <td class="px-4 py-3 text-green-700">180 - 250 крон</td>
+                            <td class="px-4 py-3 text-red-700">450+ крон (без напоїв)</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-medium">Вода (0.5л)</td>
+                            <td class="px-4 py-3 text-green-700">15 - 25 крон (у супермаркеті)</td>
+                            <td class="px-4 py-3 text-red-700">60 - 80 крон (в кіосках)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">*Трдельник взагалі не чеська страва (він зі Словаччини/Угорщини), але
+                як десерт — смачно. Головне, щоб його зняли з вогню прямо при вас, а не дали холодний.</p>
+        </section>
+
+        <!-- TAB 5: DAY TRIPS -->
+        <section id="tab-trips" class="tab-content">
+            <header class="mb-8 border-b border-gray-200 pb-4">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-dark">Виїзди на 1 день</h2>
+                <p class="text-brand-muted mt-2">Якщо Прага набридла (що навряд чи) або є вільний час.</p>
+            </header>
+
+            <div class="grid md:grid-cols-2 gap-6">
+
+                <!-- Destination 1 -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition">
+                    <div class="h-2 bg-blue-600"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">Кутна Гора (Kutná Hora)</h3>
+                        <p class="text-sm font-semibold text-blue-600 mb-3">⏱️ 1 год поїздом | Моторошно і красиво</p>
+                        <p class="text-sm text-gray-600 mb-4">Тут знаходиться знаменита <strong>Костніца (Sedlec
+                                Ossuary)</strong> — каплиця, інтер'єр якої зроблений з людських кісток (~40 тисяч
+                            скелетів). Звучить кріпово, але виглядає вражаюче. Також там є неймовірний готичний Собор
+                            Святої Варвари.</p>
+                        <div class="text-xs bg-gray-50 p-2 rounded text-gray-700">Поїзди ходять щогодини з Головного
+                            вокзалу Праги (Hlavní nádraží).</div>
+                    </div>
+                </div>
+
+                <!-- Destination 2 -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition">
+                    <div class="h-2 bg-green-600"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">Чеська Швейцарія</h3>
+                        <p class="text-sm font-semibold text-green-600 mb-3">⏱️ 2 год на авто | Природа і гори</p>
+                        <p class="text-sm text-gray-600 mb-4">Національний парк. Головна фішка — <strong>Правчицька
+                                брана</strong> (велетенська кам'яна арка з "Хронік Нарнії") та катання на човнах по
+                            річці між скелями (Тиха Каменіце). Треба багато ходити пішки вгору!</p>
+                        <div class="text-xs bg-gray-50 p-2 rounded text-gray-700">Краще брати авто. Громадським
+                            транспортом дуже складно (поїзд + автобус).</div>
+                    </div>
+                </div>
+
+                <!-- Destination 3 -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition">
+                    <div class="h-2 bg-yellow-500"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">Дрезден (Німеччина)</h3>
+                        <p class="text-sm font-semibold text-yellow-600 mb-3">⏱️ 2.5 год автобусом/поїздом | Шопінг та
+                            архітектура</p>
+                        <p class="text-sm text-gray-600 mb-4">Ідеально для зміни обстановки. Інша мова, сосиски
+                            (Bratwurst), пиво іншого стилю. Відновлений після Другої світової війни центр дуже красивий.
+                            Також туди часто їздять на шопінг (ТЦ Primark).</p>
+                        <div class="text-xs bg-gray-50 p-2 rounded text-gray-700">Автобуси FlixBus або RegioJet
+                            (відправляються з вокзалу Florenc).</div>
+                    </div>
+                </div>
+
+                <!-- Destination 4 -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition">
+                    <div class="h-2 bg-purple-500"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">Карлові Вари</h3>
+                        <p class="text-sm font-semibold text-purple-600 mb-3">⏱️ 2 год автобусом | Спа і релакс</p>
+                        <p class="text-sm text-gray-600 mb-4">Курортне містечко в долині. Тут купують спеціальну кружку
+                            і ходять п'ють гарячу мінеральну воду з джерел прямо на вулиці (безкоштовно). Дуже спокійна
+                            атмосфера. Тут також роблять лікер Бехерівка.</p>
+                        <div class="text-xs bg-gray-50 p-2 rounded text-gray-700">Їхати автобусом (RegioJet). Поїздом
+                            довго і дорого.</div>
+                    </div>
+                </div>
+
+                <!-- Destination 5: Brno -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition">
+                    <div class="h-2 bg-rose-500"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">Брно (Brno) 🔥</h3>
+                        <p class="text-sm font-semibold text-rose-600 mb-3">⏱️ 2.5 год поїздом | Друге місто Чехії</p>
+                        <p class="text-sm text-gray-600 mb-4">Друге за розміром місто Чехії, але без натовпів туристів.
+                            <strong>Шпільберк</strong> — фортеця на пагорбі з панорамним видом і музеєм тортур
+                            (справжнім, не фейковим). <strong>Підземелля під площею Zelný trh</strong> (середньовічні
+                            тунелі). Район барів Stará Brněnka — локальні крафтові пивоварні. Місто студентів, тому
+                            атмосфера жива і молода. Дуже рекомендую як day trip!
+                        </p>
+                        <div class="text-xs bg-gray-50 p-2 rounded text-gray-700">RegioJet зі ст. Hlavní nádraží. Квиток
+                            ~200 крон в одну сторону. Поїзди кожні 30 хв.</div>
+                    </div>
+                </div>
+
+                <!-- Destination 6: Vienna -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition">
+                    <div class="h-2 bg-amber-500"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">Відень (Wien, Австрія)</h3>
+                        <p class="text-sm font-semibold text-amber-600 mb-3">⏱️ 4 год поїздом | Краще з ночівлею ⚠️</p>
+                        <p class="text-sm text-gray-600 mb-4">Одне з найкрасивіших міст Європи: палац Шенбрунн, Собор
+                            Св. Стефана, кав'ярні зі штруделем і Заходертортою. <strong>Але 4 години в один бік</strong>
+                            — як day trip це 8 год у дорозі, залишається мало часу. Якщо хочете — краще поїхати з
+                            ночівлею (хостел від €25/ніч). Або обрати Брно як компроміс — воно на півдорозі і теж
+                            цікаве.</p>
+                        <div class="text-xs bg-gray-50 p-2 rounded text-gray-700">RegioJet або ÖBB (австрійські
+                            залізниці). Квиток ~400-600 крон. Їде прямий поїзд.</div>
+                    </div>
+                </div>
+
+                <!-- Destination 7: Český Krumlov -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition">
+                    <div class="h-2 bg-teal-500"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">Чеський Крумлов (Český Krumlov)</h3>
+                        <p class="text-sm font-semibold text-teal-600 mb-3">⏱️ 3 год автобусом | Казковий містечко</p>
+                        <p class="text-sm text-gray-600 mb-4">Казкове середньовічне містечко на річці Влтаві (UNESCO).
+                            Замок з <strong>ведмежим ровом</strong> (там живуть справжні ведмеді!), фарбовані фасади,
+                            вузькі вулички. Влітку можна <strong>сплавитись по Влтаві на рафті</strong> прямо крізь
+                            місто (~500 крон). Дуже інстаграмне! Але далекувато для day trip — краще їхати рано.</p>
+                        <div class="text-xs bg-gray-50 p-2 rounded text-gray-700">Автобус FlixBus/RegioJet зі ст. Na
+                            Knížecí (Anděl). Квиток ~200 крон.</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Recommendation -->
+            <div class="mt-8 bg-brand-dark text-white p-6 rounded-2xl">
+                <h3 class="text-lg font-bold mb-3">💡 Що обрати за 5 днів?</h3>
+                <p class="text-sm text-gray-300 mb-3">У вас 5 днів. Раджу <strong class="text-white">3 повних дні у
+                        Празі</strong> (там реально є чим зайнятись з вашими інтересами) + <strong
+                        class="text-white">1–2 виїзди</strong>:</p>
+                <div class="grid md:grid-cols-3 gap-3 text-sm">
+                    <div class="bg-white/10 p-3 rounded-lg">
+                        <p class="font-bold text-brand-gold">🥇 Кутна Гора</p>
+                        <p class="text-gray-300">1 год поїздом. Костніца + готичний собор. Половина дня.</p>
+                    </div>
+                    <div class="bg-white/10 p-3 rounded-lg">
+                        <p class="font-bold text-brand-gold">🥈 Брно</p>
+                        <p class="text-gray-300">2.5 год. Шпільберк, підземелля, крафтове пиво. Цілий день.</p>
+                    </div>
+                    <div class="bg-white/10 p-3 rounded-lg">
+                        <p class="font-bold text-brand-gold">🥉 Дрезден / Карлові Вари</p>
+                        <p class="text-gray-300">Якщо хочеться іншу країну або спа-день.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- App Logic -->
+    <script>
+        function openTab(tabId) {
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Show target
+            document.getElementById(tabId).classList.add('active');
+
+            // Reset all buttons styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-red', 'text-white');
+                btn.classList.add('text-brand-muted', 'hover:bg-gray-100', 'hover:text-brand-dark');
+            });
+
+            // Activate clicked button
+            const activeBtnId = tabId.replace('tab-', 'btn-');
+            const activeBtn = document.getElementById(activeBtnId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-brand-muted', 'hover:bg-gray-100', 'hover:text-brand-dark');
+                activeBtn.classList.add('bg-brand-red', 'text-white');
+            }
+
+            // Scroll to top of main on mobile when switching tabs
+            if (window.innerWidth < 768) {
+                window.scrollTo(0, 0);
+            }
+        }
+    </script>
+</body>
+
+</html>
