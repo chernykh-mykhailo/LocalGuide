@@ -1548,10 +1548,16 @@
                             onchange="updateTripDuration()"
                             class="w-16 bg-gray-50 border border-gray-200 rounded px-2 py-1 text-sm outline-none focus:border-brand-red">
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="autoDistribute()"
-                            class="px-4 py-2 bg-brand-red text-white text-xs font-bold rounded-lg hover:bg-red-700 transition flex items-center gap-2">
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="autoDistribute(false)"
+                            class="px-4 py-2 bg-brand-red text-white text-xs font-bold rounded-lg hover:bg-red-700 transition flex items-center gap-2"
+                            title="Повний перерахунок всього плану">
                             <span>⚡</span> Авто-розподіл
+                        </button>
+                        <button onclick="autoDistribute(true)"
+                            class="px-4 py-2 bg-amber-500 text-white text-xs font-bold rounded-lg hover:bg-amber-600 transition flex items-center gap-2"
+                            id="btn-auto-fill" title="Додати тільки нові (нерозподілені) місця">
+                            <span>⚡+</span> Доповнити план
                         </button>
                         <button onclick="sharePlan()"
                             class="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition flex items-center gap-2">
@@ -1588,6 +1594,17 @@
                                     class="p-3 bg-amber-500/20 rounded-lg text-xs leading-relaxed text-amber-200 border border-amber-500/30 hidden">
                                     ⚠️ Є нерозподілені місця! Оберіть для них день.
                                 </div>
+
+                                <!-- Recommendations logic -->
+                                <div id="plan-recommendations"
+                                    class="p-4 bg-white/5 rounded-xl border border-white/10 hidden">
+                                    <p class="text-[10px] uppercase font-bold text-brand-gold mb-2 tracking-wider">💡
+                                        Поруч з вашим маршрутом:</p>
+                                    <div id="rec-list" class="space-y-2">
+                                        <!-- Injected by JS -->
+                                    </div>
+                                </div>
+
                                 <div class="p-3 bg-white/5 rounded-lg text-xs leading-relaxed">
                                     <p class="text-brand-gold font-bold mb-1">💡 Порада:</p>
                                     Зазвичай за день реально відвідати 3-4 місця (~6-8 год).
@@ -1598,6 +1615,36 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Copy Plan Section (Spoiler) -->
+                <div class="mt-12 border-t border-gray-100 pt-8">
+                    <details class="group bg-white rounded-2xl border border-gray-100 overflow-hidden">
+                        <summary
+                            class="list-none p-4 cursor-pointer flex justify-between items-center hover:bg-gray-50 transition">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xl">📋</span>
+                                <h3 class="font-bold text-brand-dark">Список обраних місць ( одним списком )</h3>
+                            </div>
+                            <span class="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <div class="p-6 bg-gray-50/50">
+                            <div class="flex justify-between items-center mb-4">
+                                <p class="text-xs text-brand-muted italic">Тут всі ваші місця зібрані разом. Можна
+                                    швидко скопіювати для нотаток.</p>
+                                <button onclick="copyPlanToClipboard()"
+                                    class="px-3 py-1.5 bg-brand-dark text-white text-[10px] font-bold rounded-lg hover:bg-black transition flex items-center gap-2">
+                                    <span>✂️</span> Скопіювати текст
+                                </button>
+                            </div>
+                            <div id="full-plan-text-list"
+                                class="bg-white p-4 rounded-xl border border-gray-200 text-sm font-mono whitespace-pre-wrap leading-relaxed text-gray-700">
+                                <!-- Will be populated by JS -->
+                            </div>
+                            <!-- Hidden textarea for copying -->
+                            <textarea id="copy-helper-textarea" class="sr-only" aria-hidden="true"></textarea>
+                        </div>
+                    </details>
                 </div>
             </div>
         </section>
@@ -2059,30 +2106,90 @@
             updateFavoritesUI();
         }
 
-        function autoDistribute() {
+        function autoDistribute(onlyUnassigned = false) {
             if (favorites.length === 0) return;
             if (tripDuration < 1) return;
 
-            // Sort favorites by duration (descending) to fill days better
-            const sortedFavs = [...favorites].sort((a, b) => (itemDurations[b] || 0) - (itemDurations[a] || 0));
+            let toProcess = [];
+            let newAssignments = onlyUnassigned ? { ...dayAssignments } : {};
 
-            const newAssignments = {};
+            if (onlyUnassigned) {
+                // Тільки ті, де ще немає призначеного дня
+                toProcess = favorites.filter(id => !dayAssignments[id]);
+            } else {
+                toProcess = [...favorites];
+            }
+
+            if (toProcess.length === 0) return;
+
+            // Сортуємо за тривалістю (спочатку довгі), але додаємо "вагу" за близькістю
+            const sortedToProcess = toProcess.sort((a, b) => (itemDurations[b] || 0) - (itemDurations[a] || 0));
+
+            // Спробуємо визначити "групи" за гео-ключами в 📍
+            const getGeoGroup = (id) => {
+                const el = document.querySelector(`[data-item-id="${id}"]`);
+                if (!el) return 'unknown';
+                const loc = el.innerText.toLowerCase();
+                const title = (el.querySelector('h4') || el.querySelector('h3') || { innerText: '' }).innerText.toLowerCase();
+                const fullText = loc + " " + title;
+
+                if (fullText.includes('staroměst') || fullText.includes('старому') || fullText.includes('orloj') || fullText.includes('josefov') || fullText.includes('havelská')) return 'old-town';
+                if (fullText.includes('hrad') || fullText.includes('град') || fullText.includes('mala strana') || fullText.includes('мала страна') || fullText.includes('nerudova') || fullText.includes('nový svět')) return 'castle-area';
+                if (fullText.includes('vyšehrad') || fullText.includes('вишеград') || fullText.includes('ip pavlova') || fullText.includes('praha 2') || fullText.includes('vinohrad')) return 'south-center';
+                if (fullText.includes('letná') || fullText.includes('летна') || fullText.includes('holesovice') || fullText.includes('kbely')) return 'north';
+                if (fullText.includes('smíchov') || fullText.includes('anděl') || fullText.includes('андєл')) return 'west';
+                return 'general';
+            };
+
             const dayTimes = Array(tripDuration + 1).fill(0);
+            const dayGeoGroups = Array(tripDuration + 1).fill(null);
 
-            sortedFavs.forEach(id => {
+            // Якщо доповнюємо - треба врахувати те, що вже стоїть
+            if (onlyUnassigned) {
+                for (let id in dayAssignments) {
+                    const d = dayAssignments[id];
+                    if (d <= tripDuration && favorites.includes(id)) {
+                        dayTimes[d] += (itemDurations[id] || 0);
+                        if (dayGeoGroups[d] === null) {
+                            const g = getGeoGroup(id);
+                            if (g !== 'general') dayGeoGroups[d] = g;
+                        }
+                    }
+                }
+            }
+
+            sortedToProcess.forEach(id => {
                 const duration = itemDurations[id] || 0;
-                let minDay = 1;
-                let minTime = dayTimes[1];
+                const myGroup = getGeoGroup(id);
 
-                for (let d = 2; d <= tripDuration; d++) {
-                    if (dayTimes[d] < minTime) {
-                        minTime = dayTimes[d];
-                        minDay = d;
+                let bestDay = 1;
+                let minScore = Infinity;
+
+                for (let d = 1; d <= tripDuration; d++) {
+                    // Рахуємо "вартість" додавання в цей день
+                    // 1. Базово - завантаженість дня (щоб був баланс)
+                    let score = dayTimes[d] * 2;
+
+                    // 2. Знижуємо ціну, якщо група співпадає з обраною для цього дня
+                    if (dayGeoGroups[d] === myGroup && myGroup !== 'general' && myGroup !== 'unknown') {
+                        score -= 5; // Сильний пріоритет групуванню
+                    } else if (dayGeoGroups[d] === null) {
+                        // Якщо день порожній - ОК
+                    } else if (myGroup !== 'general') {
+                        score += 3; // Штраф за змішування далеких районів
+                    }
+
+                    if (score < minScore) {
+                        minScore = score;
+                        bestDay = d;
                     }
                 }
 
-                newAssignments[id] = minDay;
-                dayTimes[minDay] += duration;
+                newAssignments[id] = bestDay;
+                dayTimes[bestDay] += duration;
+                if (dayGeoGroups[bestDay] === null && myGroup !== 'general') {
+                    dayGeoGroups[bestDay] = myGroup;
+                }
             });
 
             dayAssignments = newAssignments;
@@ -2199,6 +2306,10 @@
             container.classList.remove('hidden');
             daysWrapper.innerHTML = '';
 
+            const textListContainer = document.getElementById('full-plan-text-list');
+            let planPlainText = "📍 МІЙ ПЛАН ПОДОРОЖІ ДО ПРАГИ\n";
+            planPlainText += "--------------------------------\n\n";
+
             let totalTime = 0;
 
             const dayGroups = { 0: [] };
@@ -2298,10 +2409,111 @@
                     unassignedList.appendChild(makePlanItem(id, time, cardTitle, targetTab, 0, true));
                 });
 
-                document.getElementById('unassigned-warning').classList.remove('hidden');
-            } else {
-                document.getElementById('unassigned-warning').classList.add('hidden');
+                // Add unassigned to plain text
+                planPlainText += "🛑 НЕРОЗПОДІЛЕНІ МІСЦЯ:\n";
+                dayGroups[0].forEach(id => {
+                    let cardTitle = id;
+                    let originalCard = document.querySelector('[data-item-id="' + id + '"]');
+                    if (originalCard) {
+                        const h = originalCard.querySelector('h4') || originalCard.querySelector('h3');
+                        if (h) cardTitle = h.innerText.trim();
+                    }
+                    planPlainText += `- ${cardTitle} (⏱️ ${itemDurations[id] || 0} год)\n`;
+                });
+                planPlainText += "\n";
             }
+
+            // Populate the specific days in plain text
+            for (let d = 1; d <= tripDuration; d++) {
+                if (dayGroups[d].length > 0) {
+                    const dateHeader = getFormattedDateForDay(d);
+                    planPlainText += `📅 ДЕНЬ ${d} ${dateHeader ? '(' + dateHeader + ')' : ''}:\n`;
+                    dayGroups[d].forEach(id => {
+                        let cardTitle = id;
+                        let originalCard = document.querySelector('[data-item-id="' + id + '"]');
+                        if (originalCard) {
+                            const h = originalCard.querySelector('h4') || originalCard.querySelector('h3');
+                            if (h) cardTitle = h.innerText.trim();
+                        }
+                        planPlainText += `- ${cardTitle} (⏱️ ${itemDurations[id] || 0} год)\n`;
+                    });
+                    planPlainText += "\n";
+                }
+            }
+
+            planPlainText += `\n📊 Разом: ${favorites.length} місць, ${totalTime.toFixed(1)} год.`;
+            if (textListContainer) textListContainer.textContent = planPlainText;
+
+            // РЕКОМЕНДАЦІЇ "ПОБУЧ" (Recommendations)
+            const recContainer = document.getElementById('plan-recommendations');
+            const recList = document.getElementById('rec-list');
+            if (recContainer && recList) {
+                const activeGroups = new Set();
+                favorites.forEach(id => {
+                    const group = getGeoGroup(id);
+                    if (group !== 'general' && group !== 'unknown') activeGroups.add(group);
+                });
+
+                const recommendations = [];
+                document.querySelectorAll('[data-item-id]').forEach(el => {
+                    const id = el.getAttribute('data-item-id');
+                    if (favorites.includes(id)) return; // Вже в обраному
+
+                    const group = getGeoGroup(id);
+                    if (activeGroups.has(group)) {
+                        const h = el.querySelector('h4') || el.querySelector('h3');
+                        if (h) {
+                            recommendations.push({ id, title: h.innerText.trim(), group });
+                        }
+                    }
+                });
+
+                if (recommendations.length > 0) {
+                    recContainer.classList.remove('hidden');
+                    recList.innerHTML = '';
+                    // Беремо 3 рандомних зі списку
+                    recommendations.sort(() => 0.5 - Math.random()).slice(0, 3).forEach(rec => {
+                        const div = document.createElement('div');
+                        div.className = "flex items-center justify-between gap-2 p-2 bg-white/10 rounded-lg hover:bg-white/20 transition group cursor-pointer";
+                        div.onclick = (e) => {
+                            if (e.target.tagName !== 'BUTTON') {
+                                const originalTab = document.querySelector(`[data-item-id="${rec.id}"]`).closest('.tab-content').id;
+                                goToItem(rec.id, originalTab);
+                            }
+                        };
+                        div.innerHTML = `
+                            <span class="text-[11px] font-medium truncate">${rec.title}</span>
+                            <button onclick="toggleFavorite('${rec.id}'); event.stopPropagation();" 
+                                class="text-xs bg-brand-gold/20 text-brand-gold px-2 py-0.5 rounded hover:bg-brand-gold hover:text-white transition">
+                                + ❤️
+                            </button>
+                        `;
+                        recList.appendChild(div);
+                    });
+                } else {
+                    recContainer.classList.add('hidden');
+                }
+            }
+        }
+
+        function copyPlanToClipboard() {
+            const text = document.getElementById('full-plan-text-list').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.currentTarget;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅ Скопійовано!';
+                btn.classList.replace('bg-brand-dark', 'bg-green-600');
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.replace('bg-green-600', 'bg-brand-dark');
+                }, 2000);
+            }).catch(err => {
+                const textArea = document.getElementById('copy-helper-textarea');
+                textArea.value = text;
+                textArea.select();
+                document.execCommand('copy');
+                alert('Скопійовано до буферу обміну!');
+            });
         }
 
         function clearPlan() {
