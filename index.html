@@ -84,6 +84,56 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* Photo cards */
+        .card-photo {
+            display: none;
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        body.photos-on .card-photo {
+            display: block;
+        }
+
+        /* Photo toggle FAB */
+        #photo-fab {
+            position: fixed;
+            bottom: 5.5rem;
+            right: 1rem;
+            z-index: 60;
+            background: #1e293b;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        #photo-fab:hover {
+            background: #334155;
+            transform: translateY(-2px);
+        }
+
+        #photo-fab.active {
+            background: #dc2626;
+        }
+
+        @media(min-width:768px) {
+            #photo-fab {
+                bottom: 1.5rem;
+            }
+        }
     </style>
 </head>
 
@@ -198,7 +248,8 @@
                 </h3>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-brand-red">
+                    <div data-item-id="sight-orloj"
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-brand-red">
                         <h4 class="font-bold text-base">⏰ Астрономічний Годинник (Orloj)</h4>
                         <p class="text-sm text-gray-600 mt-1">На ратуші Старого Міста. Щогодини з 9:00 до 23:00
                             відкриваються вікна і рухаються фігурки апостолів. Шоу триває 30 секунд — встаньте на площі
@@ -207,7 +258,8 @@
                         <p class="text-xs text-gray-400 mt-2">📍 Staroměstské náměstí</p>
                     </div>
 
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-blue-500">
+                    <div data-item-id="sight-charles"
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-blue-500">
                         <h4 class="font-bold text-base">🌉 Карлів Міст (Karlův most)</h4>
                         <p class="text-sm text-gray-600 mt-1">Найстаріший міст Праги з 30 статуями святих. <strong>Рано
                                 вранці (до 7:00)</strong> — практично порожній і магічний у тумані. Вдень — набитий
@@ -215,7 +267,8 @@
                         <p class="text-xs text-gray-400 mt-2">📍 Між Старим Містом і Малою Страною</p>
                     </div>
 
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-amber-500">
+                    <div data-item-id="sight-castle"
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-amber-500">
                         <h4 class="font-bold text-base">🏛️ Пражський Град (Pražský hrad)</h4>
                         <p class="text-sm text-gray-600 mt-1">Найбільший замковий комплекс у світі. Обов'язково:
                             <strong>Собор св. Віта</strong>, Старий Королівський палац і Злата Вуличка.
@@ -225,7 +278,8 @@
                         <p class="text-xs text-gray-400 mt-2">📍 Hradčany / Nový Svět</p>
                     </div>
 
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-green-500">
+                    <div data-item-id="sight-mala"
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-green-500">
                         <h4 class="font-bold text-base">🎻 Малeнькі провулки Малої Страни</h4>
                         <p class="text-sm text-gray-600 mt-1">Район під Замком — найкрасивіший для прогулянки. Вулиця
                             <strong>Nerudova</strong> веде прямо від мосту до воріт замку. Зайдіть у дворики, зазирніть
@@ -234,7 +288,7 @@
                         <p class="text-xs text-gray-400 mt-2">📍 Малостранська (metro A)</p>
                     </div>
 
-                    <div
+                    <div data-item-id="sight-josefov"
                         class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-purple-500">
                         <h4 class="font-bold text-base">💀 Єврейський Квартал (Josefov)</h4>
                         <p class="text-sm text-gray-600 mt-1">Старе єврейське гетто з 6 синагогами і старим кладовищем
@@ -243,7 +297,8 @@
                         <p class="text-xs text-gray-400 mt-2">📍 Staroměstské náměstí (поруч)</p>
                     </div>
 
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-rose-500">
+                    <div data-item-id="sight-vaclavske"
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-rose-500">
                         <h4 class="font-bold text-base">🌇 Вацлавська площа (Václavské náměstí)</h4>
                         <p class="text-sm text-gray-600 mt-1">Головна площа-бульвар Праги. Не кругла, а довга (700м). Це
                             тусовочне серце — ресторани, магазини, кінотеатри. На верхньому кінці — Національний Музей
@@ -1757,6 +1812,12 @@
 
     </main>
 
+    <!-- Photo toggle FAB -->
+    <button id="photo-fab" onclick="togglePhotos()" title="Показати/сховати фото">
+        <span id="photo-fab-icon">🖼️</span>
+        <span id="photo-fab-label">Фото</span>
+    </button>
+
     <script>
         // Data for cards (Duration + Unique ID for favorite system)
         const itemDurations = {
@@ -1783,6 +1844,54 @@
             "Světozor": 0.5, "Jídelna": 0.5, "Chlebíčky": 0.5, "Pekárny": 0.5, "Skála": 0.5, "Cukrář": 0.5, "Naše Maso": 1.0, "Kantýna": 1.0, "Nový Svět": 1.0, "Zahrady pod Pražským hradem": 1.5, "Сади під Празьким": 1.5, "Валленштейнський": 1.0
         };
 
+        // ── PHOTO SYSTEM ──────────────────────────────────────────
+        let photosOn = localStorage.getItem('prague_photos') === 'true';
+
+        function initPhotos() {
+            let index = 1;
+            document.querySelectorAll('[data-item-id]').forEach((card) => {
+                const id = card.dataset.itemId;
+                const img = document.createElement('img');
+
+                // Визначаємо тематику для фото
+                let theme = 'prague,city';
+                if (id.includes('food') || id.includes('cafe') || id.includes('beer')) theme = 'prague,food';
+                if (id.includes('shop') || id.includes('market')) theme = 'prague,shop';
+
+                // Використовуємо loremflickr для генерації гарних фоток міста
+                img.src = `https://loremflickr.com/400/220/${theme}?lock=${index++}`;
+                img.alt = 'Прага фото';
+                img.className = 'card-photo';
+
+                // Фолбек, якщо loremflickr колись впаде
+                img.onerror = () => { img.src = `https://picsum.photos/seed/${id}/400/220`; };
+
+                card.insertBefore(img, card.firstChild);
+            });
+            if (photosOn) document.body.classList.add('photos-on');
+            updatePhotoFab();
+        }
+
+        function togglePhotos() {
+            photosOn = !photosOn;
+            document.body.classList.toggle('photos-on', photosOn);
+            localStorage.setItem('prague_photos', photosOn);
+            updatePhotoFab();
+        }
+
+        function updatePhotoFab() {
+            const fab = document.getElementById('photo-fab');
+            const lbl = document.getElementById('photo-fab-label');
+            if (photosOn) {
+                fab.classList.add('active');
+                lbl.textContent = 'Сховати фото';
+            } else {
+                fab.classList.remove('active');
+                lbl.textContent = 'Фото';
+            }
+        }
+        // ─────────────────────────────────────────────────────────
+
         let favorites = JSON.parse(localStorage.getItem('prague_favs')) || [];
         let dayAssignments = JSON.parse(localStorage.getItem('prague_days')) || {};
         let tripStartDate = localStorage.getItem('prague_start_date') || '';
@@ -1790,6 +1899,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             initCards();
+            initPhotos();
             checkAndImportPlan();
             if (tripStartDate) document.getElementById('trip-start').value = tripStartDate;
             document.getElementById('trip-duration').value = tripDuration;
@@ -1841,44 +1951,62 @@
         }
 
         function initCards() {
-            // Find all potential card title elements in tab contents
+            // Find all individual card titles (h3 and h4 elements)
             const headers = document.querySelectorAll('.tab-content h3, .tab-content h4');
 
             headers.forEach(titleEl => {
-                const card = titleEl.closest('div');
-                if (!card || card.dataset.itemId) return; // Skip if already processed or not in a div
+                // Determine if this is a card by checking for rounded-xl (which all cards have, unlike section headers)
+                const card = titleEl.closest('div.rounded-xl') || titleEl.closest('div.bg-white');
+                if (!card || card.classList.contains('js-processed')) return;
 
-                const titleText = titleEl.innerText;
-                let id = null;
+                let id = card.dataset.itemId;
 
-                // Flexible matching: check if any key is present in title
-                for (let key in itemDurations) {
-                    if (titleText.toLowerCase().includes(key.toLowerCase())) {
-                        id = key;
-                        break;
+                if (!id) {
+                    const titleText = titleEl.innerText;
+                    // Flexible matching: check if any key is present in title
+                    for (let key in itemDurations) {
+                        if (titleText.toLowerCase().includes(key.toLowerCase())) {
+                            id = key;
+                            break;
+                        }
                     }
                 }
 
                 if (id) {
-                    // Add Relative Duration Badge
-                    const badge = document.createElement('div');
-                    badge.className = "absolute top-2 right-2 px-2 py-0.5 bg-gray-100 text-[10px] font-bold rounded-md text-gray-500 z-10 duration-badge";
-                    badge.innerHTML = `⏱️ ${itemDurations[id]} год`;
-                    card.classList.add('relative');
-                    card.appendChild(badge);
+                    // Skips adding elements if they are already dynamically generated
+                    const hasBadge = card.querySelector('.duration-badge');
+                    const hasHeart = card.querySelector('.heart-btn');
 
-                    // Add Heart Button
-                    const heartBtn = document.createElement('button');
-                    heartBtn.className = `absolute top-8 right-2 w-8 h-8 rounded-full shadow-sm flex items-center justify-center transition-all z-10 heart-btn ${favorites.includes(id) ? 'bg-red-50 text-red-500' : 'bg-white text-gray-300 hover:text-red-400'}`;
-                    heartBtn.innerHTML = favorites.includes(id) ? '❤️' : '🤍';
-                    heartBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        toggleFavorite(id, heartBtn);
-                    };
-                    card.appendChild(heartBtn);
+                    // EVERY card with an ID must be relative to contain absolute children (badges, hearts)
+                    card.classList.add('relative');
+
+                    // Remove old hardcoded buttons so they don't conflict
+                    const oldFavBtns = card.querySelectorAll('.favorite-btn, button[onclick^="toggleFavorite"]');
+                    oldFavBtns.forEach(btn => btn.remove());
+
+                    if (!hasBadge && itemDurations[id]) {
+                        // Add Relative Duration Badge
+                        const badge = document.createElement('div');
+                        badge.className = "absolute top-2 right-2 px-2 py-0.5 bg-gray-100 text-[10px] font-bold rounded-md text-gray-500 z-10 duration-badge";
+                        badge.innerHTML = `⏱️ ${itemDurations[id]} год`;
+                        card.appendChild(badge);
+                    }
+
+                    if (!hasHeart) {
+                        // Add Heart Button
+                        const heartBtn = document.createElement('button');
+                        heartBtn.className = `absolute top-8 right-2 w-8 h-8 rounded-full shadow-sm flex items-center justify-center transition-all z-10 heart-btn ${favorites.includes(id) ? 'bg-red-50 text-red-500' : 'bg-white text-gray-300 hover:text-red-400'}`;
+                        heartBtn.innerHTML = favorites.includes(id) ? '❤️' : '🤍';
+                        heartBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            toggleFavorite(id, heartBtn);
+                        };
+                        card.appendChild(heartBtn);
+                    }
 
                     // Mark card as "processed"
                     card.dataset.itemId = id;
+                    card.classList.add('js-processed');
                 }
             });
         }
