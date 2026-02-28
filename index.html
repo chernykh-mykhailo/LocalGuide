@@ -186,6 +186,10 @@
                 class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-gray-100 hover:text-brand-dark">
                 <span class="text-xl md:text-lg">🚂</span> <span class="text-center md:text-left">Виїзди</span>
             </button>
+            <button onclick="openTab('tab-dresden')" id="btn-dresden"
+                class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-gray-100 hover:text-brand-dark">
+                <span class="text-xl md:text-lg">🇩🇪</span> <span class="text-center md:text-left">Дрезден</span>
+            </button>
             <button onclick="openTab('tab-dict')" id="btn-dict"
                 class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-gray-100 hover:text-brand-dark">
                 <span class="text-xl md:text-lg">📖</span> <span class="text-center md:text-left">Словник</span>
@@ -1560,6 +1564,102 @@
 
         </section>
 
+        <!-- TAB 6: DRESDEN SPECIAL -->
+        <section id="tab-dresden" class="tab-content">
+            <header class="mb-8 border-b border-gray-200 pb-4">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="text-4xl">🇩🇪</span>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-brand-dark">Дрезден за 1 день</h2>
+                </div>
+                <p class="text-brand-muted">Ідеальний марш-кидок у Німеччину. Мистецтво, архітектура та вигідний шопінг.
+                </p>
+            </header>
+
+            <div class="space-y-8">
+                <!-- Logistics -->
+                <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100 flex flex-col md:flex-row gap-6">
+                    <div class="flex-1">
+                        <h3 class="font-bold text-blue-900 mb-2 flex items-center gap-2"><span>🚆</span> Логістика з
+                            Праги</h3>
+                        <ul class="text-sm text-blue-800 space-y-2">
+                            <li><strong>Поїзд (EuroCity):</strong> 2 год 15 хв. Комфортно, є вагон-ресторан. Відпр.
+                                щогодини з Hlavní nádraží. (~500-800 крон).</li>
+                            <li><strong>Автобус (FlixBus/RegioJet):</strong> 2 год. Найдешевше. Відпр. з вокзалу
+                                Florenc. (~300-500 крон).</li>
+                        </ul>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-blue-900 mb-2 flex items-center gap-2"><span>📍</span> Де виходити?
+                        </h3>
+                        <p class="text-sm text-blue-800">Виходьте на станції <strong>Dresden Hauptbahnhof</strong>. Від
+                            неї починається головна пішохідна та торгова вулиця <strong>Prager Straße</strong>, що веде
+                            прямо в старе місто.</p>
+                    </div>
+                </div>
+
+                <!-- Strategic Route -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2"><span>🗺️</span> Маршрут "Максимум за
+                        день"</h3>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div
+                            class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-brand-red">
+                            <span class="text-xs font-bold text-brand-red uppercase">Ранок (Мистецтво)</span>
+                            <h4 class="font-bold text-lg mt-1">🏰 Цвінгер (Zwinger)</h4>
+                            <p class="text-sm text-gray-600 mt-2">Палацовий комплекс у стилі бароко. Тут знаходиться
+                                "Галерея старих майстрів" з <strong>"Сікстинською Мадонною"</strong> Рафаеля. Навіть
+                                якщо не йти всередину, прогуляйтеся по терасах (безкоштовно).</p>
+                        </div>
+                        <div
+                            class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-amber-500">
+                            <span class="text-xs font-bold text-amber-500 uppercase">Обід (Серце міста)</span>
+                            <h4 class="font-bold text-lg mt-1">⛪ Фрауенкірхе (Frauenkirche)</h4>
+                            <p class="text-sm text-gray-600 mt-2">Неймовірний собор, повністю відновлений з руїн. Площа
+                                навколо — ідеальна для обіду (спробуйте німецький <strong>Schnitzel</strong> або
+                                сосиски). Зайдіть всередину — це безкоштовно і дуже світло.</p>
+                        </div>
+                        <div
+                            class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-green-500">
+                            <span class="text-xs font-bold text-green-500 uppercase">Вечір (Шопінг)</span>
+                            <h4 class="font-bold text-lg mt-1">🛍️ Prager Straße</h4>
+                            <p class="text-sm text-gray-600 mt-2">Повертаючись до вокзалу, пройдіть крізь
+                                <strong>Primark</strong>, TK Maxx та Karstadt. У Дрездені шопінг часто вигідніший, ніж у
+                                Празі, а вибір більший.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200">
+                        <h4 class="font-bold mb-2 flex items-center gap-2"><span>🖼️</span> Обов'язково побачити:</h4>
+                        <ul class="text-sm text-gray-700 space-y-3">
+                            <li class="flex gap-2"><strong>🔸 "Хода князів" (Fürstenzug):</strong> Величезне панно з
+                                порцеляни Meissen на зовнішній стіні замку. 100 метрів історії!</li>
+                            <li class="flex gap-2"><strong>🔸 Тераса Брюля:</strong> "Балкон Європи" з видом на річку
+                                Ельбу. Найкраще місце для кави.</li>
+                            <li class="flex gap-2"><strong>🔸 Опера Земпера:</strong> Одна з найкрасивіших будівель
+                                театрів у світі.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-amber-50 p-5 rounded-2xl border border-amber-200">
+                        <h4 class="font-bold text-amber-900 mb-2 flex items-center gap-2"><span>💡</span> Корисні
+                            поради:</h4>
+                        <ul class="text-sm text-amber-800 space-y-3">
+                            <li>🧤 <strong>Гроші:</strong> У Німеччині люблять готівку (Євро) більше, ніж у Чехії. Майте
+                                дрібні гроші на туалети та вуличну їжу.</li>
+                            <li>🥨 <strong>Їжа:</strong> Обов'язково купіть <strong>Currywurst</strong> (сосиска з
+                                каррі) у вуличному кіоску — це гастро-символ Німеччини.</li>
+                            <li>🏪 <strong>Неділя:</strong> УВАГА! В неділю в Німеччині всі магазини та ТЦ
+                                <strong>ЗАЧИНЕНІ</strong>. Їдьте в будь-який інший день.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- TAB 7: MY PLAN (Favorites) -->
         <section id="tab-plan" class="tab-content">
             <header class="mb-8 border-b border-gray-200 pb-4">
@@ -2575,10 +2675,15 @@
         function openTab(tabId) {
             // Hide all contents
             document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
                 el.classList.remove('active');
             });
             // Show target
-            document.getElementById(tabId).classList.add('active');
+            const target = document.getElementById(tabId);
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('active');
+            }
 
             // Reset all buttons styling
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -2590,13 +2695,8 @@
             const activeBtnId = tabId.replace('tab-', 'btn-');
             const activeBtn = document.getElementById(activeBtnId);
             if (activeBtn) {
-                // Special style for Plan tab if not active
-                if (tabId === 'tab-plan') {
-                    activeBtn.classList.add('bg-brand-red', 'text-white', 'hover:text-white');
-                } else {
-                    activeBtn.classList.remove('text-brand-muted', 'hover:bg-gray-100', 'hover:text-brand-dark');
-                    activeBtn.classList.add('bg-brand-red', 'text-white');
-                }
+                activeBtn.classList.remove('text-brand-muted', 'hover:bg-gray-100', 'hover:text-brand-dark');
+                activeBtn.classList.add('bg-brand-red', 'text-white');
             }
 
             // Scroll to top of main on mobile when switching tabs
