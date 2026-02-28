@@ -279,13 +279,28 @@
                     </div>
 
                     <div data-item-id="sight-mala"
-                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-green-500">
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-green-500 relative">
+                        <button onclick="toggleFavorite('sight-mala', this)"
+                            class="heart-btn absolute top-3 right-3 text-xl">🤍</button>
                         <h4 class="font-bold text-base">🎻 Малeнькі провулки Малої Страни</h4>
                         <p class="text-sm text-gray-600 mt-1">Район під Замком — найкрасивіший для прогулянки. Вулиця
                             <strong>Nerudova</strong> веде прямо від мосту до воріт замку. Зайдіть у дворики, зазирніть
-                            в арки. Там само знаходиться вілла Джона Леннона (з графіті стіна).
+                            в арки — це справжня магія старої Праги.
                         </p>
                         <p class="text-xs text-gray-400 mt-2">📍 Малостранська (metro A)</p>
+                    </div>
+
+                    <div data-item-id="sight-lennon"
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-pink-400 relative">
+                        <button onclick="toggleFavorite('sight-lennon', this)"
+                            class="heart-btn absolute top-3 right-3 text-xl">🤍</button>
+                        <h4 class="font-bold text-base">🎨 Стіна Джона Леннона (Lennon Wall)</h4>
+                        <p class="text-sm text-gray-600 mt-1">Символ свободи та миру. Стіна, постійно вкрита графіті,
+                            цитатами з пісень Beatles та посланнями. Тут завжди панує атмосфера 60-х, часто грають
+                            вуличні музиканти. Ідеально для яскравих фото!
+                        </p>
+                        <p class="text-sm font-bold text-brand-red mt-1">⏱️ 0.5 год | Безкоштовно</p>
+                        <p class="text-xs text-gray-400 mt-2">📍 Velkopřevorské náměstí</p>
                     </div>
 
                     <div data-item-id="sight-josefov"
@@ -298,13 +313,28 @@
                     </div>
 
                     <div data-item-id="sight-vaclavske"
-                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-rose-500">
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-rose-500 relative">
+                        <button onclick="toggleFavorite('sight-vaclavske', this)"
+                            class="heart-btn absolute top-3 right-3 text-xl">🤍</button>
                         <h4 class="font-bold text-base">🌇 Вацлавська площа (Václavské náměstí)</h4>
                         <p class="text-sm text-gray-600 mt-1">Головна площа-бульвар Праги. Не кругла, а довга (700м). Це
                             тусовочне серце — ресторани, магазини, кінотеатри. На верхньому кінці — Національний Музей
                             (щойно відреставрований, прикольна будівля). <strong>Ваш квартал Прага 2 — буквально
                                 поруч!</strong></p>
                         <p class="text-xs text-gray-400 mt-2">📍 Muzeum / I.P. Pavlova (metro C)</p>
+                    </div>
+
+                    <div data-item-id="sight-strahov"
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-t-4 border-t-indigo-600 relative">
+                        <button onclick="toggleFavorite('sight-strahov', this)"
+                            class="heart-btn absolute top-3 right-3 text-xl">🤍</button>
+                        <h4 class="font-bold text-base">📚 Страговська Бібліотека (Strahovský klášter)</h4>
+                        <p class="text-sm text-gray-600 mt-1">Одна з найгарніших бібліотек світу! Теологічний та
+                            Філософський зали з неймовірними фресками, старовинними глобусами та тисячами фоліантів. Це
+                            місце виглядає як декорації до «Гаррі Поттера».
+                        </p>
+                        <p class="text-sm font-bold text-brand-red mt-1">⏱️ 1.5 год | ~150 крон</p>
+                        <p class="text-xs text-gray-400 mt-2">📍 Strahovské nádvoří 1, Praha 1 (Tram 22)</p>
                     </div>
 
                 </div>
@@ -824,17 +854,17 @@
                 <div>
                     <h3 class="text-2xl font-bold mb-3 flex items-center gap-2"><span>🎯</span> Ігри та Кіно</h3>
                     <div class="grid md:grid-cols-2 gap-4">
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                            <h4 class="font-bold">Боулінг (Bowling Celnice / Radava)</h4>
-                            <p class="text-sm text-gray-600 mt-1">Bowling Celnice знаходиться прямо в центрі (біля ТЦ
-                                Palladium). Зазвичай працює допізна, там же подають пиво та закуски. Бронювати доріжку
-                                краще за день.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                            <h4 class="font-bold">Кінотеатри (Cinema City / IMAX)</h4>
-                            <p class="text-sm text-gray-600 mt-1">У Чехії майже всі західні фільми <strong>НЕ
-                                    дублюють</strong>, а показують мовою оригіналу (англійською) з чеськими субтитрами.
-                                Найбільший кінотеатр з IMAX — у ТЦ Atrium Flora (на метро А).</p>
+                        <div data-item-id="fun-lego"
+                            class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative">
+                            <button onclick="toggleFavorite('fun-lego', this)"
+                                class="heart-btn absolute top-3 right-3 text-xl">🤍</button>
+                            <h4 class="font-bold pr-8">🧱 Музей LEGO (Muzeum Lega)</h4>
+                            <p class="text-sm text-gray-600 mt-1">Один із найбільших приватних музеїв LEGO у світі! 20
+                                тематичних експозицій: від моделей Празького Граду та Карлового мосту до космічних
+                                станцій Star Wars. Більше 2500 моделей. Є крутий магазин рідкісних деталей.
+                            </p>
+                            <p class="text-sm font-bold text-brand-red mt-1">⏱️ 2 год | ~280 крон</p>
+                            <p class="text-xs text-gray-400 mt-2">📍 Národní 31, Praha 1</p>
                         </div>
                     </div>
                 </div>
@@ -1232,7 +1262,18 @@
                                 (куртки, штани, анораки). Якісно і дешевше ніж The North Face. <strong>Alpine
                                     Pro</strong> — спортивний стиль. <strong>Manufaktura</strong> — чеська косметика та
                                 сувеніри.</p>
-                            <p class="text-xs text-gray-400 mt-2">📍 Магазини розкидані по всьому центру</p>
+                            <div data-item-id="shop-havelska"
+                                class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-green-500 relative">
+                                <button onclick="toggleFavorite('shop-havelska', this)"
+                                    class="heart-btn absolute top-3 right-3 text-xl">🤍</button>
+                                <h4 class="font-bold pr-8">🎁 Гавельський Ринок (Havelské tržiště)</h4>
+                                <p class="text-sm text-gray-600 mt-1">Найстаріший ринок Праги. Тут найдешевші сувенири:
+                                    олівці Koh-i-Noor, чеська маріонетки, кружки та магніти. Також є свіжі фрукти та
+                                    ягоди. Працює щодня.
+                                </p>
+                                <p class="text-sm font-bold text-brand-red mt-1">⏱️ 1 год | Найдешевші сувеніри</p>
+                                <p class="text-xs text-gray-400 mt-2">📍 Havelská ulice, Praha 1</p>
+                            </div>
                         </div>
                         <div data-item-id="shop-parizska"
                             class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-orange-500 relative">
@@ -1882,7 +1923,7 @@
             "Grosseto": 2.0, "Kutná Hora": 6.0, "Швейцарія": 10.0, "Drezden": 8.0,
             "Karlovy Vary": 7.0, "Карлові Вари": 7.0, "Brno": 8.0, "Wien": 12.0, "Krumlov": 9.0, "Orloj": 0.5,
             "Вацлавська": 1.0, "Josefov": 1.5, "Vepřové": 1.5, "Svíčková": 1.0, "Jazz": 2.5,
-            "Ladrónka": 2.0, "Riegrovy": 1.5, "Slovanský": 1.0, "Aquapalace": 5.0,
+            "Lennon": 0.5, "sight-lennon": 0.5, "Strahov": 1.5, "sight-strahov": 1.5, "Havelská": 1.0, "shop-havelska": 1.0, "Ladrónka": 2.0, "Riegrovy": 1.5, "Slovanský": 1.0, "Aquapalace": 5.0, "fun-lego": 2.0, "LEGO": 2.0,
             "Muchy": 1.5, "Laterna": 2.0, "DOX": 2.0, "Escape": 1.5, "Nerudova": 1.5,
             "Боулінг": 1.5, "Кінотеатри": 2.5, "Marina": 2.0, "Lokal": 1.5, "Havelská": 1.0,
             "Retro Arcade": 2.0, "Ping Pong": 2.0, "Reduta": 2.0, "Beer Garden": 1.5,
