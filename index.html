@@ -132,6 +132,10 @@
                 class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-gray-100 hover:text-brand-dark">
                 <span class="text-xl md:text-lg">🚂</span> <span class="text-center md:text-left">Виїзди</span>
             </button>
+            <button onclick="openTab('tab-dict')" id="btn-dict"
+                class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-gray-100 hover:text-brand-dark">
+                <span class="text-xl md:text-lg">📖</span> <span class="text-center md:text-left">Словник</span>
+            </button>
             <div class="border-t border-gray-100 my-1 hidden md:block"></div>
             <button onclick="openTab('tab-plan')" id="btn-plan"
                 class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-red-50 hover:text-red-600">
@@ -296,6 +300,17 @@
                 <h3 class="text-2xl font-bold mb-4 flex items-center gap-2"><span>🎨</span> Музеї і Галереї (варті
                     грошей)</h3>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                    <div
+                        class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-yellow-400">
+                        <h4 class="font-bold pr-8">🎨 Central Gallery (Енді Воргол)</h4>
+                        <p class="text-sm text-gray-600 mt-1">Галерея просто на <strong>Староміській площі</strong>.
+                            Постійні експозиції трьох геніїв: <strong>Енді Воргола</strong> (поп-арт),
+                            <strong>Сальвадора Далі</strong> (сюрреалізм + скульптури) та <strong>Альфонса
+                                Мухи</strong>. Обов'язково! Квиток на 1 виставку ~300 крон, на всі три — вигідніше.
+                        </p>
+                        <p class="text-xs text-gray-400 mt-2">📍 Staroměstské náměstí 15</p>
+                    </div>
 
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
                         <h4 class="font-bold">🎠 Музей Альфонса Мухи</h4>
@@ -1262,11 +1277,223 @@
             </div>
         </section>
 
+        <!-- TAB 7: DICTIONARY -->
+        <section id="tab-dict" class="tab-content">
+            <header class="mb-8 border-b border-gray-200 pb-4">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-dark">📖 Чеська для виживання</h2>
+                <p class="text-brand-muted mt-2">Короткий словник найважливіших фраз. Чехи дуже цінують, коли туристи
+                    кажуть хоча б "Dobrý den".</p>
+            </header>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Greetings -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold flex items-center gap-2 text-brand-red"><span>👋</span> Вітання та
+                        ввічливість</h3>
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-gray-50 text-[10px] uppercase font-bold text-gray-400">
+                                <tr>
+                                    <th class="px-4 py-2 border-b">Чеська</th>
+                                    <th class="px-4 py-2 border-b">Вимова</th>
+                                    <th class="px-4 py-2 border-b">Переклад</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Dobrý den</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[До́бри ден]</td>
+                                    <td class="px-4 py-3">Добрий день</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Ahoj!</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[А́гой]</td>
+                                    <td class="px-4 py-3">Привіт / Бувай</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Prosím</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[Про́сім]</td>
+                                    <td class="px-4 py-3">Будь ласка</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Děkuji</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[Дя́куї]</td>
+                                    <td class="px-4 py-3">Дякую</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Ano / Ne</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[Ано / Не]</td>
+                                    <td class="px-4 py-3">Так / Ні</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Nerozumím</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[Нерозумі́м]</td>
+                                    <td class="px-4 py-3">Не розумію</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Restaurant/Pub -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold flex items-center gap-2 text-amber-600"><span>🍺</span> У ресторані /
+                        Пивниці</h3>
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-gray-50 text-[10px] uppercase font-bold text-gray-400">
+                                <tr>
+                                    <th class="px-4 py-2 border-b">Чеська</th>
+                                    <th class="px-4 py-2 border-b">Вимова</th>
+                                    <th class="px-4 py-2 border-b">Переклад</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Pivo, prosím</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[Пи́во, про́сім]</td>
+                                    <td class="px-4 py-3">Пиво, будь ласка</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Platit, prosím</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[Пла́тіт, про́сім]</td>
+                                    <td class="px-4 py-3">Рахунок, будь ласка</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Jídelní lístek</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[Ї́делні лі́стек]</td>
+                                    <td class="px-4 py-3">Меню</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Na zdraví!</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[На здра́ві]</td>
+                                    <td class="px-4 py-3">Будьмо! (Тост)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Vodu, prosím</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[Во́ду, про́сім]</td>
+                                    <td class="px-4 py-3">Води, будь ласка</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Shopping/Money -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold flex items-center gap-2 text-blue-600"><span>💰</span> Магазини та
+                        Гроші</h3>
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-gray-50 text-[10px] uppercase font-bold text-gray-400">
+                                <tr>
+                                    <th class="px-4 py-2 border-b">Чеська</th>
+                                    <th class="px-4 py-2 border-b">Вимова</th>
+                                    <th class="px-4 py-2 border-b">Переклад</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Kolik to stojí?</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[Ко́лік то сто́ї?]</td>
+                                    <td class="px-4 py-3">Скільки це коштує?</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Kartou?</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[Ка́ртоу?]</td>
+                                    <td class="px-4 py-3">Картою? (питання)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Tašku, prosím</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[Та́шку, про́сім]</td>
+                                    <td class="px-4 py-3">Пакет, будь ласка</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Sleva</td>
+                                    <td class="px-4 py-3 text-brand-muted italic">[Сле́ва]</td>
+                                    <td class="px-4 py-3">Знижка</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Emergency -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold flex items-center gap-2 text-red-600"><span>🆘</span> Екстрені випадки
+                    </h3>
+                    <div class="bg-red-50 rounded-2xl shadow-sm border border-red-100 overflow-hidden">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-red-100 text-[10px] uppercase font-bold text-red-500">
+                                <tr>
+                                    <th class="px-4 py-2 border-b">Чеська</th>
+                                    <th class="px-4 py-2 border-b">Вимова</th>
+                                    <th class="px-4 py-2 border-b">Переклад</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-red-100">
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Pomoc!</td>
+                                    <td class="px-4 py-3 text-red-600 italic">[По́моц]</td>
+                                    <td class="px-4 py-3">На допомогу!</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Kde je nemocnice?</td>
+                                    <td class="px-4 py-3 text-red-600 italic">[Кде є не́моцніце?]</td>
+                                    <td class="px-4 py-3">Де лікарня?</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Potřebuji doktora</td>
+                                    <td class="px-4 py-3 text-red-600 italic">[Потрше́буї до́ктора]</td>
+                                    <td class="px-4 py-3">Мені потрібен лікар</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold">Policie</td>
+                                    <td class="px-4 py-3 text-red-600 italic">[По́ліціє]</td>
+                                    <td class="px-4 py-3">Поліція</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Language Hacks -->
+            <div class="mt-12 bg-gray-100 p-6 rounded-2xl">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><span>💡</span> Короткі лайфхаки по вимові
+                </h3>
+                <ul class="space-y-3 text-sm text-gray-700">
+                    <li class="flex gap-3">
+                        <span class="text-brand-red font-bold">C</span>
+                        <span>Завжди читається як <strong>"Ц"</strong> (не К і не С). <i>Pomoc = Помоц</i>.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-brand-red font-bold">Č</span>
+                        <span>Читається як м'яке <strong>"Ч"</strong>.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-brand-red font-bold">H</span>
+                        <span>Читається як українська <strong>"Г"</strong>.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-brand-red font-bold">J</span>
+                        <span>Читається як <strong>"Й"</strong>. <i>Ahoj = Агой</i>.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-brand-red font-bold">Ř</span>
+                        <span>Найважчий звук, щось середнє між <strong>"Р"</strong> та <strong>"Ж"</strong>. <i>Dvořák =
+                                Дворжак</i>.</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
     </main>
 
     <script>
         // Data for cards (Duration + Unique ID for favorite system)
         const itemDurations = {
+            "Central Gallery": 2.0, "central-gallery": 2.0,
             "Staroměstська": 1.5, "Karlův": 1.0, "Tančící": 0.5, "Lennon": 0.5,
             "Náplavka": 1.5, "Petřín": 2.0, "Letná": 1.5, "Vyšehrad": 2.0, "Střelecký": 1.0,
             "Pražský hrad": 3.5, "Kafka": 1.5, "Národní": 3.0, "Hudby": 2.0, "Kytary": 1.0,
@@ -1471,6 +1698,91 @@
             updateFavoritesUI();
         }
 
+        function getFormattedDateForDay(dayNum) {
+            if (!tripStartDate) return '';
+            const date = new Date(tripStartDate);
+            if (isNaN(date.getTime())) return '';
+            date.setDate(date.getDate() + (dayNum - 1));
+            return date.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit' });
+        }
+
+        function goToItem(id, tab) {
+            openTab(tab);
+            setTimeout(() => {
+                const el = document.querySelector('[data-item-id="' + id + '"]');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+
+        function removeFavItem(id) {
+            const btn = document.querySelector('[data-item-id="' + id + '"] .heart-btn');
+            toggleFavorite(id, btn);
+        }
+
+        function makePlanItem(id, time, cardTitle, targetTab, currentDay, isUnassigned) {
+            const item = document.createElement('div');
+            item.className = isUnassigned
+                ? 'bg-white p-3 rounded-xl border border-amber-100 flex flex-wrap justify-between items-center gap-2 shadow-sm'
+                : 'bg-white p-3 rounded-xl border border-gray-100 shadow-sm flex flex-wrap justify-between items-center gap-2';
+
+            // Left: title button
+            const left = document.createElement('div');
+            left.className = 'flex-1 min-w-[150px]';
+
+            const titleBtn = document.createElement('button');
+            titleBtn.className = 'text-left group w-full';
+            titleBtn.addEventListener('click', () => goToItem(id, targetTab));
+
+            const titleDiv = document.createElement('div');
+            titleDiv.className = isUnassigned
+                ? 'font-bold text-sm leading-tight text-amber-900 group-hover:text-brand-red transition-colors'
+                : 'font-bold text-sm leading-tight group-hover:text-brand-red transition-colors';
+            const timeSpan = document.createElement('span');
+            timeSpan.className = isUnassigned
+                ? 'text-[10px] text-amber-600 ml-1 whitespace-nowrap'
+                : 'text-[10px] text-gray-400 ml-1 whitespace-nowrap';
+            timeSpan.textContent = '⏱️ ' + time;
+            titleDiv.textContent = cardTitle + ' ';
+            titleDiv.appendChild(timeSpan);
+            titleBtn.appendChild(titleDiv);
+            left.appendChild(titleBtn);
+
+            // Right: select + trash
+            const right = document.createElement('div');
+            right.className = 'flex items-center gap-2';
+
+            const sel = document.createElement('select');
+            sel.className = isUnassigned
+                ? 'text-[10px] bg-white border border-amber-200 rounded px-1 py-1 outline-none focus:border-amber-500'
+                : 'text-[10px] bg-gray-50 border border-gray-200 rounded px-1 py-1 outline-none focus:border-brand-red';
+            sel.addEventListener('change', () => assignDay(id, parseInt(sel.value)));
+
+            const defaultOpt = document.createElement('option');
+            defaultOpt.value = '0';
+            defaultOpt.textContent = isUnassigned ? '-- обрати день --' : '-- день --';
+            sel.appendChild(defaultOpt);
+
+            for (let i = 1; i <= tripDuration; i++) {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = 'День ' + i;
+                if (currentDay === i) opt.selected = true;
+                sel.appendChild(opt);
+            }
+
+            const trashBtn = document.createElement('button');
+            trashBtn.className = 'text-gray-400 hover:text-red-500 text-sm p-1';
+            trashBtn.textContent = '🗑️';
+            trashBtn.addEventListener('click', () => removeFavItem(id));
+
+            right.appendChild(sel);
+            right.appendChild(trashBtn);
+
+            item.appendChild(left);
+            item.appendChild(right);
+            return item;
+        }
+
         function updateFavoritesUI() {
             const empty = document.getElementById('plan-empty');
             const container = document.getElementById('plan-container');
@@ -1479,6 +1791,8 @@
             if (favorites.length === 0) {
                 empty.classList.remove('hidden');
                 container.classList.add('hidden');
+                document.getElementById('stat-count').innerText = '0';
+                document.getElementById('stat-time').innerText = '0';
                 return;
             }
 
@@ -1486,11 +1800,7 @@
             container.classList.remove('hidden');
             daysWrapper.innerHTML = '';
 
-            const dayNames = ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П\'ятниця', 'Субота'];
             let totalTime = 0;
-            let unassignedCount = 0;
-            list.classList.remove('hidden'); // Show the container if not empty
-            // document.getElementById('plan-actions').classList.remove('hidden'); // No 'plan-actions' in original
 
             const dayGroups = { 0: [] };
             for (let i = 1; i <= tripDuration; i++) dayGroups[i] = [];
@@ -1499,29 +1809,33 @@
                 const day = dayAssignments[id] || 0;
                 if (dayGroups[day]) dayGroups[day].push(id);
                 else dayGroups[0].push(id);
+                totalTime += (itemDurations[id] || 0);
             });
 
-            // Update individual cards UI
+            document.getElementById('stat-count').innerText = favorites.length;
+            document.getElementById('stat-time').innerText = totalTime.toFixed(1);
+
+            // Оновлюємо стан сердечок на картках
             document.querySelectorAll('.heart-btn').forEach(btn => {
                 const card = btn.closest('[data-item-id]');
                 if (card) {
                     const id = card.getAttribute('data-item-id');
                     if (favorites.includes(id)) {
                         btn.innerHTML = '❤️';
-                        btn.classList.add('bg-red-50', 'text-red-500'); // Added bg-red-50
-                        btn.classList.remove('bg-white', 'text-gray-300'); // Removed bg-white
+                        btn.classList.add('bg-red-50', 'text-red-500');
+                        btn.classList.remove('bg-white', 'text-gray-300');
                     } else {
                         btn.innerHTML = '🤍';
-                        btn.classList.remove('bg-red-50', 'text-red-500'); // Removed bg-red-50
-                        btn.classList.add('bg-white', 'text-gray-300'); // Added bg-white
+                        btn.classList.remove('bg-red-50', 'text-red-500');
+                        btn.classList.add('bg-white', 'text-gray-300');
                     }
                 }
             });
 
-            // Render day blocks
+            // Відмальовуємо блоки днів
             for (let d = 1; d <= tripDuration; d++) {
                 const dayBlock = document.createElement('div');
-                dayBlock.className = "p-4 rounded-2xl border bg-white border-gray-100 shadow-sm mb-6 last:mb-0"; // Added classes from original
+                dayBlock.className = "p-4 rounded-2xl border bg-white border-gray-100 shadow-sm mb-6 last:mb-0";
 
                 const dateHeader = getFormattedDateForDay(d);
 
@@ -1533,7 +1847,7 @@
                     <div id="day-list-${d}" class="space-y-2 min-h-[50px] bg-gray-50/50 rounded-2xl p-3 border-2 border-dashed border-gray-100">
                     </div>
                 `;
-                list.appendChild(dayBlock);
+                daysWrapper.appendChild(dayBlock);
 
                 const currentDayList = dayBlock.querySelector(`#day-list-${d}`);
                 let dayTime = 0;
@@ -1541,92 +1855,53 @@
                 dayGroups[d].forEach(id => {
                     const time = itemDurations[id] || 0;
                     dayTime += time;
-                    let originalCard = document.querySelector(`[data-item-id="${id}"]`);
-                    let cardTitle = id;
-                    let targetTab = 'tab-sights'; // default
-
-                    if (originalCard) {
-                        const h = originalCard.querySelector('h4') || originalCard.querySelector('h3');
-                        if (h) cardTitle = h.innerText;
-                        const parentTab = originalCard.closest('.tab-content');
-                        if (parentTab) targetTab = parentTab.id;
-                    }
-
-                    const item = document.createElement('div');
-                    item.className = "bg-white p-3 rounded-xl border border-gray-50 flex flex-wrap justify-between items-center gap-2";
-                    item.innerHTML = `
-                        <div class="flex-1 min-w-[150px]">
-                            <button onclick="openTab('${targetTab}'); document.querySelector('[data-item-id=\\'${id}\\']').scrollIntoView({behavior: 'smooth', block: 'center'});" 
-                                class="text-left group">
-                                <div class="font-bold text-sm leading-tight group-hover:text-brand-red transition-colors">${cardTitle} 
-                                    <span class="text-[10px] text-gray-400 ml-1">⏱️ ${time}</span>
-                                    <span class="text-[10px] text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity ml-1">→ детальніше</span>
-                                </div>
-                            </button>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <select onchange="assignDay('${id}', parseInt(this.value))" class="text-[10px] bg-gray-50 border-none rounded px-1 py-0.5 outline-none">
-                                <option value="0">-- день --</option>
-                                ${Array.from({ length: tripDuration }, (_, i) => i + 1).map(dayNum => `
-                                    <option value="${dayNum}" ${d === dayNum ? 'selected' : ''}>День ${dayNum}</option>
-                                `).join('')}
-                            </select>
-                            <button onclick="toggleFavorite('${id}', document.querySelector('[data-item-id=\\'${id}\\'] .heart-btn'))" class="text-gray-300 hover:text-red-500 text-xs">🗑️</button>
-                        </div>
-                    `;
-                    currentDayList.appendChild(item);
-                });
-
-                document.getElementById(`day-total-${d}`).innerText = `⏱️ ${dayTime.toFixed(1)} год`;
-            }
-
-            // Unassigned items block
-            if (dayGroups[0].length > 0) {
-                const unassignedBlock = document.createElement('div');
-                unassignedBlock.className = "p-4 rounded-2xl border bg-amber-50 border-amber-200 mt-8 pt-6 border-t border-gray-100"; // Added classes from original
-                unassignedBlock.innerHTML = `
-                    <h3 class="font-bold text-lg">🛑 Нерозподілені</h3>
-                    <div id="unassigned-list" class="space-y-2"></div>
-                `;
-                list.appendChild(unassignedBlock);
-                const unassignedList = unassignedBlock.querySelector('#unassigned-list');
-
-                dayGroups[0].forEach(id => {
-                    const time = itemDurations[id] || 0;
-                    let originalCard = document.querySelector(`[data-item-id="${id}"]`);
+                    let originalCard = document.querySelector('[data-item-id="' + id + '"]');
                     let cardTitle = id;
                     let targetTab = 'tab-sights';
 
                     if (originalCard) {
                         const h = originalCard.querySelector('h4') || originalCard.querySelector('h3');
-                        if (h) cardTitle = h.innerText;
+                        if (h) cardTitle = h.innerText.trim();
                         const parentTab = originalCard.closest('.tab-content');
                         if (parentTab) targetTab = parentTab.id;
                     }
 
-                    const item = document.createElement('div');
-                    item.className = "bg-white p-3 rounded-xl border border-gray-50 flex flex-wrap justify-between items-center gap-2 opacity-60 hover:opacity-100 transition-opacity";
-                    item.innerHTML = `
-                        <div class="flex-1 min-w-[150px]">
-                            <button onclick="openTab('${targetTab}'); document.querySelector('[data-item-id=\\'${id}\\']').scrollIntoView({behavior: 'smooth', block: 'center'});" 
-                                class="text-left group">
-                                <div class="font-bold text-sm leading-tight group-hover:text-brand-red transition-colors">${cardTitle} 
-                                    <span class="text-[10px] text-gray-400 ml-1">⏱️ ${time}</span>
-                                </div>
-                            </button>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <select onchange="assignDay('${id}', parseInt(this.value))" class="text-[10px] bg-gray-50 border-none rounded px-1 py-0.5 outline-none">
-                                <option value="0" selected>-- день --</option>
-                                ${Array.from({ length: tripDuration }, (_, i) => i + 1).map(dayNum => `
-                                    <option value="${dayNum}">День ${dayNum}</option>
-                                `).join('')}
-                            </select>
-                            <button onclick="toggleFavorite('${id}', document.querySelector('[data-item-id=\\'${id}\\'] .heart-btn'))" class="text-gray-300 hover:text-red-500 text-xs">🗑️</button>
-                        </div>
-                    `;
-                    unassignedList.appendChild(item);
+                    currentDayList.appendChild(makePlanItem(id, time, cardTitle, targetTab, d, false));
                 });
+
+                document.getElementById(`day-total-${d}`).innerText = `⏱️ ${dayTime.toFixed(1)} год`;
+            }
+
+            // Блок нерозподілених місць
+            if (dayGroups[0].length > 0) {
+                const unassignedBlock = document.createElement('div');
+                unassignedBlock.className = "p-4 rounded-2xl border bg-amber-50 border-amber-200 mt-8";
+                unassignedBlock.innerHTML = `
+                    <h3 class="font-bold text-lg text-amber-900 mb-3">🛑 Нерозподілені місця</h3>
+                    <div id="unassigned-list" class="space-y-2"></div>
+                `;
+                daysWrapper.appendChild(unassignedBlock);
+                const unassignedList = unassignedBlock.querySelector('#unassigned-list');
+
+                dayGroups[0].forEach(id => {
+                    const time = itemDurations[id] || 0;
+                    let originalCard = document.querySelector('[data-item-id="' + id + '"]');
+                    let cardTitle = id;
+                    let targetTab = 'tab-sights';
+
+                    if (originalCard) {
+                        const h = originalCard.querySelector('h4') || originalCard.querySelector('h3');
+                        if (h) cardTitle = h.innerText.trim();
+                        const parentTab = originalCard.closest('.tab-content');
+                        if (parentTab) targetTab = parentTab.id;
+                    }
+
+                    unassignedList.appendChild(makePlanItem(id, time, cardTitle, targetTab, 0, true));
+                });
+
+                document.getElementById('unassigned-warning').classList.remove('hidden');
+            } else {
+                document.getElementById('unassigned-warning').classList.add('hidden');
             }
         }
 
