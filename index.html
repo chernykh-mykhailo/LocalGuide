@@ -1977,8 +1977,6 @@
 
                 if (id) {
                     // Skips adding elements if they are already dynamically generated
-                    const hasBadge = card.querySelector('.duration-badge');
-                    const hasHeart = card.querySelector('.heart-btn');
 
                     // EVERY card with an ID must be relative to contain absolute children (badges, hearts)
                     card.classList.add('relative');
@@ -1986,6 +1984,9 @@
                     // Remove old hardcoded buttons so they don't conflict
                     const oldFavBtns = card.querySelectorAll('.favorite-btn, button[onclick^="toggleFavorite"]');
                     oldFavBtns.forEach(btn => btn.remove());
+
+                    const hasBadge = card.querySelector('.duration-badge');
+                    const hasHeart = card.querySelector('.heart-btn');
 
                     if (!hasBadge && itemDurations[id]) {
                         // Add Relative Duration Badge
