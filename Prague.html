@@ -123,6 +123,11 @@
                 class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-gray-100 hover:text-brand-dark">
                 <span class="text-xl md:text-lg">🚂</span> <span class="text-center md:text-left">Виїзди</span>
             </button>
+            <div class="border-t border-gray-100 my-1 hidden md:block"></div>
+            <button onclick="openTab('tab-plan')" id="btn-plan"
+                class="nav-btn flex-1 md:w-full flex flex-col md:flex-row items-center md:justify-start gap-1 md:gap-3 p-2 md:px-4 md:py-3 rounded-lg text-xs md:text-sm font-semibold transition-colors text-brand-muted hover:bg-red-50 hover:text-red-600">
+                <span class="text-xl md:text-lg">❤️</span> <span class="text-center md:text-left">Мій План</span>
+            </button>
         </div>
     </nav>
 
@@ -399,29 +404,88 @@
             </div>
 
             <!-- Day by day suggestion -->
-            <div class="bg-brand-dark text-white p-6 rounded-2xl">
-                <h3 class="text-xl font-bold mb-4">📅 Орієнтовний план на 5 днів</h3>
-                <div class="grid md:grid-cols-5 gap-3 text-sm">
-                    <div class="bg-white/10 p-3 rounded-lg">
-                        <p class="font-bold text-brand-gold">День 1</p>
-                        <p class="mt-1 text-gray-300">Прага 2 і Вишеград. Будинки, кав'ярні, привітатись з містом.</p>
-                    </div>
-                    <div class="bg-white/10 p-3 rounded-lg">
-                        <p class="font-bold text-brand-gold">День 2</p>
-                        <p class="mt-1 text-gray-300">Карлів Міст (рано), Малу Страну, Замок і Петршин.</p>
-                    </div>
-                    <div class="bg-white/10 p-3 rounded-lg">
-                        <p class="font-bold text-brand-gold">День 3</p>
-                        <p class="mt-1 text-gray-300">Старе Місто, Годинник, Josefov, Летна на захід сонця.</p>
-                    </div>
-                    <div class="bg-white/10 p-3 rounded-lg">
-                        <p class="font-bold text-brand-gold">День 4</p>
-                        <p class="mt-1 text-gray-300">Виїзд (Кутна Гора). Або активний день + кіно/боулінг ввечері.</p>
-                    </div>
-                    <div class="bg-white/10 p-3 rounded-lg">
-                        <p class="font-bold text-brand-gold">День 5</p>
-                        <p class="mt-1 text-gray-300">Жижков, Телевежа, шопінг, ресторан і збори.</p>
-                    </div>
+            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm mt-8">
+                <h3 class="text-2xl font-bold mb-4 flex items-center gap-2"><span>🗺️</span> Варіанти планів на 5 днів
+                </h3>
+                <p class="text-sm text-gray-500 mb-6">Клікніть на день, щоб розгорнути план. Це не жорсткий графік, а
+                    ідеї, щоб ви не тупили в гугл-картах.</p>
+
+                <div class="space-y-3">
+                    <details class="group bg-gray-50 rounded-xl overflow-hidden border border-gray-100" open>
+                        <summary class="p-4 cursor-pointer font-bold flex justify-between items-center list-none">
+                            <span>День 1: Приїзд, заселення і "Класика"</span>
+                            <span class="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm leading-relaxed text-gray-700 space-y-3 border-t border-gray-100">
+                            <p><strong>День:</strong> Приліт. Сідаєте на тролейбус №59, їдете до метро, заселяєтесь у
+                                квартиру в Празі 2 (готуйтеся до 5 поверху!).</p>
+                            <p><strong>Обід:</strong> Шукаєте найближчий заклад із вивіскою "Denní menu" біля I.P.
+                                Pavlova, щоб швидко і ситно поїсти суп + м'ясо.</p>
+                            <p><strong>Друга половина дня (Легко):</strong> Йдете пішки до <strong>Вацлавської
+                                    площі</strong> (це поруч). Потім спускаєтесь до <strong>Староміської площі</strong>
+                                подивитися на Астрономічний годинник (Orloj). Просто гуляєте вуличками.</p>
+                            <p><strong>Вечір:</strong> Вечеря у пивниці. Беріть щось класичне (гуляш) і тестуйте чеське
+                                пиво.</p>
+                        </div>
+                    </details>
+
+                    <details class="group bg-gray-50 rounded-xl overflow-hidden border border-gray-100">
+                        <summary class="p-4 cursor-pointer font-bold flex justify-between items-center list-none">
+                            <span>День 2: Празький Град та Безкоштовний Злиток</span>
+                            <span class="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm leading-relaxed text-gray-700 space-y-3 border-t border-gray-100">
+                            <p><strong>Ранок:</strong> Карлів Міст (якомога раніше, поки немає натовпу). Потім пішки
+                                вгору через Малу Страну до <strong>Празького Граду</strong>.</p>
+                            <p><strong>День:</strong> Огляд Собору св. Віта та Златої вулички. Спуск через виноградники
+                                за панорамою міста (St. Wenceslas Vineyard).</p>
+                            <p><strong>Для тата:</strong> Зайдіть у <strong>Національний технічний музей</strong> (NTM)
+                                — там літаки, паровози і техніка, від якої очі світяться.</p>
+                            <p><strong>Вечір:</strong> Летенські сади. Бір-гарден з найкращим видом на мости Влтави.</p>
+                        </div>
+                    </details>
+
+                    <details class="group bg-gray-50 rounded-xl overflow-hidden border border-gray-100">
+                        <summary class="p-4 cursor-pointer font-bold flex justify-between items-center list-none">
+                            <span>День 3: Виїзд у Дрезден (Німеччина) або Чеську Швейцарію</span>
+                            <span class="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm leading-relaxed text-gray-700 space-y-3 border-t border-gray-100">
+                            <p><strong>Варіант А:</strong> Дрезден (2.5 год автобусом). Галерея старих майстрів, сосиски
+                                (currywurst) і зовсім інша атмосфера. Ідеально для фото і шопінгу.</p>
+                            <p><strong>Варіант Б:</strong> Природа. Поїзд до Дечіна, далі в гори. Складно логістично,
+                                але неймовірно красиво.</p>
+                        </div>
+                    </details>
+
+                    <details class="group bg-gray-50 rounded-xl overflow-hidden border border-gray-100">
+                        <summary class="p-4 cursor-pointer font-bold flex justify-between items-center list-none">
+                            <span>День 4: Петршин, Вишеград та Коліно</span>
+                            <span class="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm leading-relaxed text-gray-700 space-y-3 border-t border-gray-100">
+                            <p><strong>Ранок:</strong> Фунікулер на пагорб Петршин (використовуйте Lítačka!). Огляд
+                                оглядової вежі.</p>
+                            <p><strong>Обід:</strong> Заплануйте похід у <strong>Kantýna</strong> або
+                                <strong>Lokal</strong>. Час брати справжнє свиняче коліно (Vepřové koleno)!
+                            </p>
+                            <p><strong>Вечір:</strong> Прогулянка по <strong>Вишеграду</strong>. Це тиха фортеця з
+                                найкрасивішим кладовищем-музеєм і панорамою на Влтаву на заході сонця.</p>
+                        </div>
+                    </details>
+
+                    <details class="group bg-gray-50 rounded-xl overflow-hidden border border-gray-100">
+                        <summary class="p-4 cursor-pointer font-bold flex justify-between items-center list-none">
+                            <span>День 5: Суші, Шопінг і Виліт</span>
+                            <span class="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm leading-relaxed text-gray-700 space-y-3 border-t border-gray-100">
+                            <p><strong>Ранок:</strong> Останні покупки сувенірів у "Manufaktura" або "Flying Tiger".</p>
+                            <p><strong>Обід:</strong> Як обіцяли — <strong>Running Sushi</strong> у ТЦ Nový Smíchov або
+                                Palladium. Їжте скільки влізе за фіксовану ціну.</p>
+                            <p><strong>Виліт:</strong> Тролейбус №59 назад в аеропорт. Прага за вами сумуватиме!</p>
+                        </div>
+                    </details>
                 </div>
             </div>
 
@@ -500,7 +564,8 @@
                     <p class="text-sm text-gray-600 mt-2">Один з найпопулярніших AYCE суші у Празі. Замовляєш через
                         планшет (не конвеєр — все свіже). Суші, сашимі, темпура, роли, гарячі страви та десерти.
                         <strong>Обід: ~400 крон, вечеря: ~550 крон</strong>. Якість справді хороша. Є кілька точок по
-                        місту.</p>
+                        місту.
+                    </p>
                     <p class="text-xs text-gray-400 mt-2">📍 Вацлавська площа / Anděl / Florenc</p>
                 </div>
 
@@ -1037,10 +1102,360 @@
 
         </section>
 
+        <!-- TAB 7: MY PLAN (Favorites) -->
+        <section id="tab-plan" class="tab-content">
+            <header class="mb-8 border-b border-gray-200 pb-4">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-dark">Мій План ❤️</h2>
+                <p class="text-brand-muted mt-2">Ваші збережені місця та розрахунок часу.</p>
+            </header>
+
+            <div id="plan-empty" class="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-gray-200">
+                <div class="text-5xl mb-4">🏜️</div>
+                <h3 class="text-xl font-bold text-gray-400">Тут поки порожньо</h3>
+                <p class="text-gray-400 mt-2 text-sm">Натисніть на ❤️ біля цікавих місць, щоб вони з'явилися тут.</p>
+                <button onclick="openTab('tab-sights')"
+                    class="mt-6 px-6 py-2 bg-brand-red text-white rounded-full font-bold hover:bg-red-700 transition">Перейти
+                    до вибору</button>
+            </div>
+
+            <div id="plan-container" class="hidden">
+                <div class="mb-6 bg-white p-4 rounded-xl border border-gray-100 flex flex-wrap gap-4 items-center">
+                    <div>
+                        <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Дата прибуття:</label>
+                        <input type="date" id="trip-start" onchange="updateTripDates()"
+                            class="bg-gray-50 border border-gray-200 rounded px-2 py-1 text-sm outline-none focus:border-brand-red">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">К-сть днів:</label>
+                        <input type="number" id="trip-duration" value="5" min="1" max="14"
+                            onchange="updateTripDuration()"
+                            class="w-16 bg-gray-50 border border-gray-200 rounded px-2 py-1 text-sm outline-none focus:border-brand-red">
+                    </div>
+                    <div>
+                        <button onclick="autoDistribute()"
+                            class="px-4 py-2 bg-brand-red text-white text-xs font-bold rounded-lg hover:bg-red-700 transition flex items-center gap-2">
+                            <span>⚡</span> Авто-розподіл
+                        </button>
+                    </div>
+                    <div class="flex-1 min-w-[200px]">
+                        <p class="text-xs text-brand-muted">Розподіліть обрані місця по днях. Ми автоматично порахуємо
+                            навантаження на кожен день.</p>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-4 gap-6">
+                    <!-- Day Columns -->
+                    <div class="lg:col-span-3 space-y-6" id="days-containers">
+                        <!-- Days 1-5 will be injected here -->
+                    </div>
+
+                    <!-- Summary Sidebar -->
+                    <div class="space-y-4">
+                        <div class="bg-brand-dark text-white p-6 rounded-2xl sticky top-24 shadow-xl">
+                            <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span>📊</span> Статус поїздки
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between border-b border-white/10 pb-2">
+                                    <span class="text-gray-400">Всього місць:</span>
+                                    <span id="stat-count" class="font-bold text-brand-gold">0</span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/10 pb-2">
+                                    <span class="text-gray-400">Загальний час:</span>
+                                    <span class="font-bold"><span id="stat-time">0</span> год</span>
+                                </div>
+                                <div id="unassigned-warning"
+                                    class="p-3 bg-amber-500/20 rounded-lg text-xs leading-relaxed text-amber-200 border border-amber-500/30 hidden">
+                                    ⚠️ Є нерозподілені місця! Оберіть для них день.
+                                </div>
+                                <div class="p-3 bg-white/5 rounded-lg text-xs leading-relaxed">
+                                    <p class="text-brand-gold font-bold mb-1">💡 Порада:</p>
+                                    Зазвичай за день реально відвідати 3-4 місця (~6-8 год).
+                                </div>
+                                <button onclick="clearPlan()"
+                                    class="w-full py-2 text-xs font-bold text-red-400 hover:text-red-300 transition">Очистити
+                                    все</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- App Logic -->
     <script>
+        // Data for cards (Duration + Unique ID for favorite system)
+        const itemDurations = {
+            "Staroměstська": 1.5, "Karlův": 1.0, "Tančící": 0.5, "Lennon": 0.5,
+            "Náplavka": 1.5, "Petřín": 2.0, "Letná": 1.5, "Vyšehrad": 2.0, "Střelecký": 1.0,
+            "Pražský hrad": 3.5, "Kafka": 1.5, "Národní": 3.0, "Hudby": 2.0, "Kytary": 1.0,
+            "Paluba": 3.0, "SmíchOFF": 3.0, "Lokal Blok": 2.0, "BigWall": 3.0, "Joystick": 2.0,
+            "Level Up": 2.0, "Lešany": 5.0, "NTM": 4.0, "Kbely": 3.0, "Žižkov": 2.0,
+            "Kantýna": 1.5, "U Kroka": 1.5, "Krčma": 2.0, "U Fleků": 2.0, "Staropramen": 2.5,
+            "Sumo": 2.0, "Running": 1.5, "Ambiente": 2.0, "Asia": 1.0, "Kampa": 1.5,
+            "Grosseto": 2.0, "Kutná Hora": 6.0, "Švýcarsko": 10.0, "Drezden": 8.0,
+            "Karlovy Vary": 7.0, "Brno": 8.0, "Wien": 12.0, "Krumlov": 9.0, "Orloj": 0.5,
+            "Вацлавська": 1.0, "Josefov": 1.5, "Vepřové": 1.5, "Svíčková": 1.0, "Jazz": 2.5,
+            "Ladrónka": 2.0, "Riegrovy": 1.5, "Slovanský": 1.0, "Aquapalace": 5.0,
+            "Muchy": 1.5, "Laterna": 2.0, "DOX": 2.0, "Escape": 1.5, "Nerudova": 1.5,
+            "Боулінг": 1.5, "Кінотеатри": 2.5, "Marina": 2.0, "Lokal": 1.5, "Havelská": 1.0,
+            "Retro Arcade": 2.0, "Ping Pong": 2.0, "Reduta": 2.0, "Beer Garden": 1.5,
+            "Провулки": 1.5, "Ролики": 2.0
+        };
+
+        let favorites = JSON.parse(localStorage.getItem('prague_favs')) || [];
+        let dayAssignments = JSON.parse(localStorage.getItem('prague_days')) || {};
+        let tripStartDate = localStorage.getItem('prague_start_date') || '';
+        let tripDuration = parseInt(localStorage.getItem('prague_duration')) || 5;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initCards();
+            if (tripStartDate) document.getElementById('trip-start').value = tripStartDate;
+            document.getElementById('trip-duration').value = tripDuration;
+            updateFavoritesUI();
+        });
+
+        function initCards() {
+            // Universal card selector: any div with a background color inside a tab-content section
+            const cards = document.querySelectorAll('.tab-content div[class*="bg-"]');
+
+            cards.forEach(card => {
+                const titleEl = card.querySelector('h4') || card.querySelector('h3');
+                if (!titleEl) return;
+
+                const titleText = titleEl.innerText;
+                let id = null;
+
+                // Flexible matching: check if any key is present in title, regardless of other text/emoji
+                for (let key in itemDurations) {
+                    if (titleText.toLowerCase().includes(key.toLowerCase())) {
+                        id = key;
+                        break;
+                    }
+                }
+
+                if (id) {
+                    // Add Relative Duration Badge
+                    const badge = document.createElement('div');
+                    badge.className = "absolute top-2 right-2 px-2 py-0.5 bg-gray-100 text-[10px] font-bold rounded-md text-gray-500 z-10 duration-badge";
+                    badge.innerHTML = `⏱️ ${itemDurations[id]} год`;
+                    card.classList.add('relative');
+                    card.appendChild(badge);
+
+                    // Add Heart Button
+                    const heartBtn = document.createElement('button');
+                    heartBtn.className = `absolute top-8 right-2 w-8 h-8 rounded-full shadow-sm flex items-center justify-center transition-all z-10 heart-btn ${favorites.includes(id) ? 'bg-red-50 text-red-500' : 'bg-white text-gray-300 hover:text-red-400'}`;
+                    heartBtn.innerHTML = favorites.includes(id) ? '❤️' : '🤍';
+                    heartBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        toggleFavorite(id, heartBtn);
+                    };
+                    card.appendChild(heartBtn);
+
+                    // Mark card as "processed" to avoid double icons
+                    card.dataset.itemId = id;
+                }
+            });
+        }
+
+        function toggleFavorite(id, btn) {
+            const index = favorites.indexOf(id);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                btn.innerHTML = '🤍';
+                btn.classList.remove('bg-red-50', 'text-red-500');
+                btn.classList.add('bg-white', 'text-gray-300');
+            } else {
+                favorites.push(id);
+                btn.innerHTML = '❤️';
+                btn.classList.remove('bg-white', 'text-gray-300');
+                btn.classList.add('bg-red-50', 'text-red-500');
+            }
+            localStorage.setItem('prague_favs', JSON.stringify(favorites));
+            updateFavoritesUI();
+
+            // Sync other buttons with same ID if any
+            document.querySelectorAll(`[data-item-id="${id}"] .heart-btn`).forEach(b => {
+                if (b !== btn) {
+                    b.innerHTML = btn.innerHTML;
+                    b.className = btn.className;
+                }
+            });
+        }
+
+        function updateTripDuration() {
+            tripDuration = parseInt(document.getElementById('trip-duration').value) || 5;
+            localStorage.setItem('prague_duration', tripDuration);
+            // Remove assignments for days beyond the new duration
+            for (let id in dayAssignments) {
+                if (dayAssignments[id] > tripDuration) {
+                    delete dayAssignments[id];
+                }
+            }
+            localStorage.setItem('prague_days', JSON.stringify(dayAssignments));
+            updateFavoritesUI();
+        }
+
+        function updateTripDates() {
+            tripStartDate = document.getElementById('trip-start').value;
+            localStorage.setItem('prague_start_date', tripStartDate);
+            updateFavoritesUI();
+        }
+
+        function autoDistribute() {
+            if (favorites.length === 0) return;
+            if (tripDuration < 1) return;
+
+            // Sort favorites by duration (descending) to fill days better
+            const sortedFavs = [...favorites].sort((a, b) => (itemDurations[b] || 0) - (itemDurations[a] || 0));
+
+            const newAssignments = {};
+            const dayTimes = Array(tripDuration + 1).fill(0);
+
+            sortedFavs.forEach(id => {
+                const duration = itemDurations[id] || 0;
+                let minDay = 1;
+                let minTime = dayTimes[1];
+
+                for (let d = 2; d <= tripDuration; d++) {
+                    if (dayTimes[d] < minTime) {
+                        minTime = dayTimes[d];
+                        minDay = d;
+                    }
+                }
+
+                newAssignments[id] = minDay;
+                dayTimes[minDay] += duration;
+            });
+
+            dayAssignments = newAssignments;
+            localStorage.setItem('prague_days', JSON.stringify(dayAssignments));
+            updateFavoritesUI();
+        }
+
+        function assignDay(id, day) {
+            if (day === 0) delete dayAssignments[id];
+            else dayAssignments[id] = day;
+            localStorage.setItem('prague_days', JSON.stringify(dayAssignments));
+            updateFavoritesUI();
+        }
+
+        function updateFavoritesUI() {
+            const empty = document.getElementById('plan-empty');
+            const container = document.getElementById('plan-container');
+            const daysWrapper = document.getElementById('days-containers');
+
+            if (favorites.length === 0) {
+                empty.classList.remove('hidden');
+                container.classList.add('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            container.classList.remove('hidden');
+            daysWrapper.innerHTML = '';
+
+            const dayNames = ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П\'ятниця', 'Субота'];
+            let totalTime = 0;
+            let unassignedCount = 0;
+
+            // Prepare groups (0 = unassigned, 1 to tripDuration = days)
+            const dayGroups = { 0: [] };
+            for (let d = 1; d <= tripDuration; d++) dayGroups[d] = [];
+
+            favorites.forEach(id => {
+                const day = dayAssignments[id] || 0;
+                // If assignment is valid for current duration
+                if (day > 0 && day <= tripDuration) {
+                    dayGroups[day].push(id);
+                } else {
+                    dayGroups[0].push(id);
+                    unassignedCount++;
+                }
+                totalTime += (itemDurations[id] || 0);
+            });
+
+            document.getElementById('stat-count').innerText = favorites.length;
+            document.getElementById('stat-time').innerText = totalTime.toFixed(1);
+            document.getElementById('unassigned-warning').classList.toggle('hidden', unassignedCount === 0);
+
+            // Render each day section
+            for (let d = 0; d <= tripDuration; d++) {
+                if (d === 0 && unassignedCount === 0) continue;
+
+                let dayTime = 0;
+                dayGroups[d].forEach(id => dayTime += (itemDurations[id] || 0));
+
+                let dayTitle = d === 0 ? "🛑 Нерозподілені" : `День ${d}`;
+                let dateBadge = "";
+
+                if (d > 0 && tripStartDate) {
+                    const date = new Date(tripStartDate);
+                    date.setDate(date.getDate() + (d - 1));
+                    const dName = dayNames[date.getDay()];
+                    const dStr = date.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit' });
+                    dateBadge = `<span class="text-xs font-normal opacity-60 ml-2">(${dName}, ${dStr})</span>`;
+                }
+
+                const daySection = document.createElement('div');
+                daySection.className = `p-4 rounded-2xl border ${d === 0 ? 'bg-amber-50 border-amber-200' : 'bg-white border-gray-100 shadow-sm'}`;
+
+                daySection.innerHTML = `
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg">${dayTitle}${dateBadge}</h3>
+                        <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">⏱️ ${dayTime.toFixed(1)} год</span>
+                    </div>
+                    <div class="space-y-3" id="day-list-${d}"></div>
+                `;
+
+                const list = daySection.querySelector(`#day-list-${d}`);
+                dayGroups[d].forEach(id => {
+                    const time = itemDurations[id] || 0;
+                    let originalCard = document.querySelector(`[data-item-id="${id}"]`);
+                    let cardTitle = id;
+                    if (originalCard) {
+                        const h = originalCard.querySelector('h4') || originalCard.querySelector('h3');
+                        if (h) cardTitle = h.innerText;
+                    }
+
+                    const item = document.createElement('div');
+                    item.className = "bg-white p-3 rounded-xl border border-gray-50 flex flex-wrap justify-between items-center gap-2";
+                    item.innerHTML = `
+                        <div class="flex-1 min-w-[150px]">
+                            <div class="font-bold text-sm leading-tight">${cardTitle} <span class="text-[10px] text-gray-400 ml-1">⏱️ ${time}</span></div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select onchange="assignDay('${id}', parseInt(this.value))" class="text-[10px] bg-gray-50 border-none rounded px-1 py-0.5 outline-none">
+                                <option value="0" ${d === 0 ? 'selected' : ''}>-- день --</option>
+                                ${Array.from({ length: tripDuration }, (_, i) => i + 1).map(dayNum => `
+                                    <option value="${dayNum}" ${d === dayNum ? 'selected' : ''}>День ${dayNum}</option>
+                                `).join('')}
+                            </select>
+                            <button onclick="toggleFavorite('${id}', document.querySelector('[data-item-id=\\'${id}\\'] .heart-btn'))" class="text-gray-300 hover:text-red-500 text-xs">🗑️</button>
+                        </div>
+                    `;
+                    list.appendChild(item);
+                });
+
+                daysWrapper.appendChild(daySection);
+            }
+        }
+
+        function clearPlan() {
+            if (confirm('Очистити список обраного?')) {
+                favorites = [];
+                dayAssignments = {};
+                localStorage.removeItem('prague_favs');
+                localStorage.removeItem('prague_days');
+                // Reset hearts globally
+                document.querySelectorAll('.heart-btn').forEach(btn => {
+                    btn.innerHTML = '🤍';
+                    btn.className = 'absolute top-8 right-2 w-8 h-8 rounded-full shadow-sm flex items-center justify-center transition-all z-10 heart-btn bg-white text-gray-300 hover:text-red-400';
+                });
+                updateFavoritesUI();
+            }
+        }
+
         function openTab(tabId) {
             // Hide all contents
             document.querySelectorAll('.tab-content').forEach(el => {
@@ -1059,8 +1474,13 @@
             const activeBtnId = tabId.replace('tab-', 'btn-');
             const activeBtn = document.getElementById(activeBtnId);
             if (activeBtn) {
-                activeBtn.classList.remove('text-brand-muted', 'hover:bg-gray-100', 'hover:text-brand-dark');
-                activeBtn.classList.add('bg-brand-red', 'text-white');
+                // Special style for Plan tab if not active
+                if (tabId === 'tab-plan') {
+                    activeBtn.classList.add('bg-brand-red', 'text-white', 'hover:text-white');
+                } else {
+                    activeBtn.classList.remove('text-brand-muted', 'hover:bg-gray-100', 'hover:text-brand-dark');
+                    activeBtn.classList.add('bg-brand-red', 'text-white');
+                }
             }
 
             // Scroll to top of main on mobile when switching tabs
