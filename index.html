@@ -1143,10 +1143,14 @@
                             onchange="updateTripDuration()"
                             class="w-16 bg-gray-50 border border-gray-200 rounded px-2 py-1 text-sm outline-none focus:border-brand-red">
                     </div>
-                    <div>
+                    <div class="flex gap-2">
                         <button onclick="autoDistribute()"
                             class="px-4 py-2 bg-brand-red text-white text-xs font-bold rounded-lg hover:bg-red-700 transition flex items-center gap-2">
                             <span>⚡</span> Авто-розподіл
+                        </button>
+                        <button onclick="sharePlan()"
+                            class="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition flex items-center gap-2">
+                            <span>🔗</span> Поділитися
                         </button>
                     </div>
                     <div class="flex-1 min-w-[200px]">
@@ -1226,10 +1230,55 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             initCards();
+            checkAndImportPlan();
             if (tripStartDate) document.getElementById('trip-start').value = tripStartDate;
             document.getElementById('trip-duration').value = tripDuration;
             updateFavoritesUI();
         });
+
+        function sharePlan() {
+            const planData = {
+                favs: favorites,
+                days: dayAssignments,
+                start: tripStartDate,
+                duration: tripDuration
+            };
+            const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(planData))));
+            const shareUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?plan=${encoded}`;
+
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                alert('🚀 Посилання для тата скопійовано! Просто скинь йому його в месенджер.');
+            }).catch(err => {
+                prompt('Скопіюйте це посилання:', shareUrl);
+            });
+        }
+
+        function checkAndImportPlan() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const encodedPlan = urlParams.get('plan');
+
+            if (encodedPlan) {
+                try {
+                    const decoded = JSON.parse(decodeURIComponent(escape(atob(encodedPlan))));
+                    if (confirm('🎉 Знайдено новий спільний план подорожі! Завантажити його?\n(Ваш поточний план буде замінено)')) {
+                        favorites = decoded.favs || [];
+                        dayAssignments = decoded.days || {};
+                        tripStartDate = decoded.start || '';
+                        tripDuration = decoded.duration || 5;
+
+                        localStorage.setItem('prague_favs', JSON.stringify(favorites));
+                        localStorage.setItem('prague_days', JSON.stringify(dayAssignments));
+                        localStorage.setItem('prague_start_date', tripStartDate);
+                        localStorage.setItem('prague_duration', tripDuration);
+
+                        // Redirect to plain URL to clean up browser bar
+                        window.location.href = window.location.pathname;
+                    }
+                } catch (e) {
+                    console.error('Failed to parse shared plan', e);
+                }
+            }
+        }
 
         function initCards() {
             // Find all potential card title elements in tab contents
