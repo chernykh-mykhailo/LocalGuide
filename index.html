@@ -564,7 +564,11 @@
             </div>
 
             <div class="grid md:grid-cols-2 gap-4">
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-rose-500">
+                <!-- Card 1 -->
+                <div data-item-id="food-sumo"
+                    class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-rose-500 relative">
+                    <button onclick="toggleFavorite('food-sumo')"
+                        class="favorite-btn absolute top-4 right-4 text-xl opacity-20 hover:opacity-100 transition-opacity">🤍</button>
                     <div class="pr-16 mb-2">
                         <h4 class="font-bold text-lg">🍣 Sumo Sushi & Grill</h4>
                         <span
@@ -572,28 +576,33 @@
                             крон обід</span>
                     </div>
                     <p class="text-sm text-gray-600 mt-2">Один з найпопулярніших AYCE суші у Празі. Замовляєш через
-                        планшет (не конвеєр — все свіже). Суші, сашимі, темпура, роли, гарячі страви та десерти.
-                        <strong>Обід: ~400 крон, вечеря: ~550 крон</strong>. Якість справді хороша. Є кілька точок по
-                        місту.
-                    </p>
-                    <p class="text-xs text-gray-400 mt-2">📍 Вацлавська площа / Anděl / Florenc</p>
+                        планшет. Суші, сашимі, темпура, роли, гарячі страви. <strong>Обід: ~400 крон, вечеря: ~550
+                            крон</strong>. Якість справді хороша.</p>
+                    <p class="text-xs text-brand-muted mt-2">📍 Вацлавська площа / Anděl / Florenc</p>
                 </div>
 
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-pink-500">
+                <!-- Card 2 -->
+                <div data-item-id="food-happy"
+                    class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-pink-500 relative">
+                    <button onclick="toggleFavorite('food-happy')"
+                        class="favorite-btn absolute top-4 right-4 text-xl opacity-20 hover:opacity-100 transition-opacity">🤍</button>
                     <div class="pr-16 mb-2">
                         <h4 class="font-bold text-lg">🍣 Running Sushi (Happy)</h4>
                         <span
                             class="inline-block mt-1 text-[10px] bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">~400
                             крон обід</span>
                     </div>
-                    <p class="text-sm text-gray-600 mt-2">Класичний конвеєрний суші-буфет. Сідаєш за стійку, їжа їде
-                        повз тебе на тарілочках — берешь що хочеш. <strong>Обід: ~400 крон/2 год, вечеря: ~500
-                            крон</strong>. Точки у <strong>ТЦ Palladium</strong> (центр) та <strong>Nový
-                            Smíchov</strong>. Ідеально коли всі хочуть різне.</p>
-                    <p class="text-xs text-gray-400 mt-2">📍 ТЦ Palladium (Náměstí Republiky) / Nový Smíchov</p>
+                    <p class="text-sm text-gray-600 mt-2">Класичний конвеєрний суші-буфет. Їжа їде повз тебе на
+                        тарілочках. <strong>Обід: ~400 крон, вечеря: ~500 крон</strong>. ТЦ Palladium та Nový Smíchov.
+                    </p>
+                    <p class="text-xs text-brand-muted mt-2">📍 ТЦ Palladium / Nový Smíchov</p>
                 </div>
 
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-red-500">
+                <!-- Card 3 -->
+                <div data-item-id="food-ambiente"
+                    class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-red-500 relative">
+                    <button onclick="toggleFavorite('food-ambiente')"
+                        class="favorite-btn absolute top-4 right-4 text-xl opacity-20 hover:opacity-100 transition-opacity">🤍</button>
                     <div class="pr-16 mb-2">
                         <h4 class="font-bold text-lg">🥩 Brazilian Steakhouse (Ambiente)</h4>
                         <span
@@ -601,73 +610,73 @@
                             крон</span>
                     </div>
                     <p class="text-sm text-gray-600 mt-2">Бразильська родізіо-система: офіціанти ходять з шампурами
-                        різного м'яса (яловичина, свинина, курка, ковбаски) і <strong>ріжуть прямо тобі в
-                            тарілку</strong> поки не скажеш «стоп». Салат-бар без обмежень. <strong>Для тата — рай
-                            земний</strong>. Ціна ~700 крон за все м'ясо + салати. Не дешево, але того варте раз на
-
-                    <div
-                        class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-orange-500">
-                        <div class="pr-16 mb-2">
-                            <h4 class="font-bold text-lg">🍜 Asia Restaurant Bílý Koníček</h4>
-                            <span
-                                class="inline-block mt-1 text-[10px] bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">~300
-                                крон
-                                обід</span>
-                        </div>
-                        <p class="text-sm text-gray-600 mt-2">Азійський буфет з гірок різних страв: китайська,
-                            в'єтнамська,
-                            тайська кухня. Набираєш на тарілку скільки хочеш. <strong>Обід ~300 крон, вечеря ~400
-                                крон</strong>. Простий інтер'єр, але їжа ситна і вибір величезний. Найдешевший варіант
-                            AYCE
-                            у Празі.</p>
-                        <p class="text-xs text-gray-400 mt-2">📍 Staroměstské náměstí (поруч)</p>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-amber-500">
-                        <div class="pr-16 mb-2">
-                            <h4 class="font-bold text-lg">🍖 Kampa Group — м'ясний буфет</h4>
-                            <span
-                                class="inline-block mt-1 text-[10px] bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full font-bold">~450
-                                крон обід</span>
-                        </div>
-                        <p class="text-sm text-gray-600 mt-2">Чеська та міжнародна кухня у форматі буфету. М'ясо на
-                            грилі,
-                            традиційні чеські страви (гуляш, печене коліно порціями), салати, супи, десерти.
-                            <strong>~450
-                                крон за обід</strong>. Стоїть у самому центрі. Хороший варіант коли кожен хоче щось
-                            своє.
-                        </p>
-                        <p class="text-xs text-gray-400 mt-2">📍 Центр (біля Музея)</p>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-green-500">
-                        <div class="pr-16 mb-2">
-                            <h4 class="font-bold text-lg">🥗 Grosseto Marina (Brunch)</h4>
-                            <span
-                                class="inline-block mt-1 text-[10px] bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">~500
-                                крон</span>
-                        </div>
-                        <p class="text-sm text-gray-600 mt-2">Розкішний <strong>недільний бранч</strong> у форматі
-                            буфету на
-                            набережній Влтави. Яйця, бекон, панкейки, фрукти, десерти, сири, м'ясні страви. ~500 крон з
-                            напоями. Красива тераса з видом на воду. Потрібно бронювати!</p>
-                        <p class="text-xs text-gray-400 mt-2">📍 Alšovo nábřeží (набережна, поруч зі Старим Містом)</p>
-                    </div>
+                        м'яса і ріжуть прямо тобі в тарілку. <strong>Для тата — рай земний</strong>. Ціна ~700 крон за
+                        все м'ясо + салати.</p>
+                    <p class="text-xs text-brand-muted mt-2">📍 Na Příkopě 16 / Slovanský dům</p>
                 </div>
 
-                <div class="mt-4 p-4 bg-red-50 rounded-lg border border-red-200">
-                    <p class="text-sm text-red-900"><strong>⚠️ Уникайте:</strong> Буфети на Вацлавській площі з написом
-                        «Czech Buffet» за 200 крон — це пастки. Там стоять розігріті контейнери з їжею незрозумілої
-                        свіжості. Якщо буфет коштує підозріло дешево у самому центрі — це 🚩.</p>
-                </div>
-
-                <div class="mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
-                    <p class="text-sm text-purple-900"><strong>Лайфхак на вечір:</strong> Встановіть додаток
-                        <strong>Nesnězeno</strong>. Ресторани ввечері розпродають нереалізовану їжу зі знижками 50-70%.
-                        У
-                        Празі 2 таких закладів дуже багато.
+                <!-- Card 4 -->
+                <div data-item-id="food-asiamix"
+                    class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-orange-500 relative">
+                    <button onclick="toggleFavorite('food-asiamix')"
+                        class="favorite-btn absolute top-4 right-4 text-xl opacity-20 hover:opacity-100 transition-opacity">🤍</button>
+                    <div class="pr-16 mb-2">
+                        <h4 class="font-bold text-lg">🍜 Asia Restaurant Bílý Koníček</h4>
+                        <span
+                            class="inline-block mt-1 text-[10px] bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">~300
+                            крон обід</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Азійський буфет з гірок різних страв. Набираєш на тарілку
+                        скільки хочеш. <strong>Обід ~300 крон, вечеря ~400 крон</strong>. Найдешевший варіант у Празі.
                     </p>
+                    <p class="text-xs text-brand-muted mt-2">📍 Staroměstské náměstí (поруч)</p>
                 </div>
+
+                <!-- Card 5 -->
+                <div data-item-id="food-kampa-buffet"
+                    class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-amber-500 relative">
+                    <button onclick="toggleFavorite('food-kampa-buffet')"
+                        class="favorite-btn absolute top-4 right-4 text-xl opacity-20 hover:opacity-100 transition-opacity">🤍</button>
+                    <div class="pr-16 mb-2">
+                        <h4 class="font-bold text-lg">🍖 Kampa Group — м'ясний буфет</h4>
+                        <span
+                            class="inline-block mt-1 text-[10px] bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full font-bold">~450
+                            крон обід</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Чеська та міжнародна кухня: м'ясо на грилі, гуляш, печене
+                        коліно порціями. <strong>~450 крон за обід</strong>. Стоїть у самому центрі.</p>
+                    <p class="text-xs text-brand-muted mt-2">📍 Центр (біля Музея)</p>
+                </div>
+
+                <!-- Card 6 -->
+                <div data-item-id="food-brunch-grosseto"
+                    class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-green-500 relative">
+                    <button onclick="toggleFavorite('food-brunch-grosseto')"
+                        class="favorite-btn absolute top-4 right-4 text-xl opacity-20 hover:opacity-100 transition-opacity">🤍</button>
+                    <div class="pr-16 mb-2">
+                        <h4 class="font-bold text-lg">🥗 Grosseto Marina (Brunch)</h4>
+                        <span
+                            class="inline-block mt-1 text-[10px] bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">~500
+                            крон</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Розкішний <strong>недільний бранч</strong> на набережній
+                        Влтави. Панкейки, десерти, сири, м'ясо. ~500 крон. Красивий вид.</p>
+                    <p class="text-xs text-brand-muted mt-2">📍 Alšovo nábřeží (біля Старого Міста)</p>
+                </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-red-50 rounded-lg border border-red-200">
+                <p class="text-sm text-red-900"><strong>⚠️ Уникайте:</strong> Буфети на Вацлавській площі з написом
+                    «Czech Buffet» за 200 крон — це пастки. Там стоять розігріті контейнери з їжею незрозумілої
+                    свіжості. Якщо буфет коштує підозріло дешево — це 🚩.</p>
+            </div>
+
+            <div class="mt-4 p-4 bg-purple-50 rounded-lg border border-purple-200">
+                <p class="text-sm text-purple-900"><strong>Лайфхак на вечір:</strong> Встановіть додаток
+                    <strong>Nesnězeno</strong>. Ресторани ввечері розпродають їжу зі знижками 50-70%. У Празі 2 таких
+                    закладів дуже багато.</p>
+            </div>
+            </div>
         </section>
 
         <!-- TAB 3: FUN & ENTERTAINMENT -->
@@ -1633,12 +1642,18 @@
             });
 
             if (!query) {
-                // Reset EVERYTHING
-                document.querySelectorAll('.tab-content div, .tab-content section, .tab-content h2, .tab-content h3, .tab-content h4, .tab-content p, .tab-content li, [data-item-id]').forEach(el => {
-                    el.classList.remove('hidden', 'ring-2', 'ring-brand-red', 'animate-pulse', 'cursor-pointer');
-                    if (el.dataset.itemId) {
-                        // Reset heart click handler logic if needed, but it's bound via dataset.itemId check
+                // FORCE RESET EVERYTHING
+                const all = document.querySelectorAll('.tab-content *');
+                all.forEach(el => {
+                    el.classList.remove('hidden', 'ring-2', 'ring-brand-red', 'ring-4', 'ring-blue-400', 'bg-blue-100', 'animate-pulse', 'cursor-pointer', 'scale-[1.02]');
+                    // If it's a tab-content, handled by openTab logic
+                    if (el.classList.contains('tab-content')) {
+                        if (!el.classList.contains('active')) el.classList.add('hidden');
                     } else {
+                        el.style.display = ''; // Clear any inline styles
+                        el.classList.remove('hidden');
+                    }
+                    if (!el.hasAttribute('data-item-id') && !el.classList.contains('favorite-btn')) {
                         el.onclick = null;
                     }
                 });
@@ -1647,12 +1662,15 @@
 
             let foundInTabs = new Map(); // tabId -> count
 
-            // First pass: find all matches across all tabs
-            const allElements = document.querySelectorAll('.tab-content [data-item-id], .tab-content h2, .tab-content h3, .tab-content h4, .tab-content p, .tab-content li, .tab-content .bg-white');
+            // First pass: find all matches and handle layout containers
+            // We include larger layout blocks (like the Brazilian/Buffet sections) 
+            const allElements = document.querySelectorAll('.tab-content [data-item-id], .tab-content h2, .tab-content h3, .tab-content h4, .tab-content p, .tab-content li, .tab-content .bg-white, .tab-content section, .tab-content .grid, .tab-content .flex');
 
-            // Hide all potential leaf nodes first
+            // Hide all potential nodes/containers first, EXCEPT the main tab container
             allElements.forEach(el => {
-                el.classList.add('hidden');
+                if (!el.classList.contains('tab-content')) {
+                    el.classList.add('hidden');
+                }
                 el.classList.remove('ring-2', 'ring-brand-red', 'cursor-pointer');
                 el.onclick = null;
             });
@@ -1666,7 +1684,7 @@
                     const pTab = el.closest('.tab-content');
                     if (pTab) foundInTabs.set(pTab.id, (foundInTabs.get(pTab.id) || 0) + 1);
 
-                    // If it's a significant block, highlight it
+                    // If it's a significant card or layout block, highlight it
                     if (el.hasAttribute('data-item-id') || el.classList.contains('bg-white')) {
                         el.classList.add('ring-2', 'ring-brand-red', 'cursor-pointer');
                         el.onclick = () => {
@@ -1687,11 +1705,24 @@
                         };
                     }
 
-                    // Show parents
+                    // Show parents safely
                     let parent = el.parentElement;
                     while (parent && !parent.classList.contains('tab-content')) {
                         parent.classList.remove('hidden');
+                        // NEVER hide these, or we lose columns
+                        if (parent.classList.contains('grid') || parent.classList.contains('flex')) {
+                            parent.classList.remove('hidden');
+                            parent.style.display = '';
+                        }
                         parent = parent.parentElement;
+                    }
+
+                    // Force show the heart for any match in a card
+                    const card = el.closest('[data-item-id]');
+                    if (card) {
+                        card.classList.remove('hidden');
+                        const h = card.querySelector('.favorite-btn');
+                        if (h) h.classList.remove('hidden');
                     }
                 }
             });
